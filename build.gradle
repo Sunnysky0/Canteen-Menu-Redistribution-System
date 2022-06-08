@@ -1,0 +1,28 @@
+plugins {
+    id 'groovy'
+    id 'java'
+}
+
+group 'cn.sunnysky'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:3.0.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+allprojects {
+    apply plugin: 'java'//必须放最上面
+    sourceCompatibility = 1.8
+    group 'cn.sunnysky'
+    version '1.0-SNAPSHOT'
+}
+
+test {
+    useJUnitPlatform()
+}
