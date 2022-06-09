@@ -1,5 +1,5 @@
 rootProject.name = 'Cantenn Menu Redistribution System'
 include 'ServerCore'
 include 'ClientCore'
-include 'CommandSolveCore'
+include 'ExternalCommandManager'
 

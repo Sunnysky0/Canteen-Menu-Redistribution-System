@@ -7,6 +7,7 @@ import java.net.Socket;
 public class ServerBase {
     private static final int port = 40000;
     private ServerSocket serverSocket;
+    private static final float i = 1;
 
     public ServerBase() throws IOException {
         serverSocket = new ServerSocket(port);

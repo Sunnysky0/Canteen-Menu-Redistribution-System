@@ -11,7 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ClientCore" />
-            <option value="$PROJECT_DIR$/CommandSolveCore" />
+            <option value="$PROJECT_DIR$/ExternalCommandManager" />
             <option value="$PROJECT_DIR$/ServerCore" />
           </set>
         </option>
