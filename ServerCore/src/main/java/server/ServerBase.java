@@ -1,17 +1,22 @@
 package server;
 
+import cn.sunnysky.IntegratedManager;
+import cn.sunnysky.api.Side;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static cn.sunnysky.IntegratedManager.logger;
 public class ServerBase {
     private static final int port = 40000;
     private ServerSocket serverSocket;
-    private static final float i = 1;
+    private IntegratedManager manager;
 
     public ServerBase() throws IOException {
         serverSocket = new ServerSocket(port);
-        System.out.println("Server Started");
+        manager = new IntegratedManager(Side.SERVER);
+        logger.log("Server Started");
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {
@@ -33,8 +38,8 @@ public class ServerBase {
         {
             Socket socket = null;
             try {
-                socket = serverSocket.accept();//等待客户连接
-                System.out.println("Client connected, address: "+socket.getInetAddress()+" Port:"+socket.getPort());
+                socket = serverSocket.accept();//Waiting for the client
+                logger.log("Client connected, address: "+socket.getInetAddress()+" Port:"+socket.getPort());
 
                 PrintWriter writer = this.getWriter(socket);
                 BufferedReader reader = this.getReader(socket);
@@ -47,7 +52,8 @@ public class ServerBase {
                         flag = true;
                         break;
                     }
-                    System.out.println(socket.getInetAddress()+" "+socket.getPort()+" Sent: "+msg);
+                    manager.resolveCmd(msg,writer);
+                    logger.log(socket.getInetAddress()+" "+socket.getPort()+" Sent: "+msg);
                     writer.println("Server recived: " + msg);
                 }
             } catch (IOException e) {

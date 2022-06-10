@@ -1,17 +1,25 @@
 package client;
 
+import cn.sunnysky.IntegratedManager;
+import cn.sunnysky.api.Side;
+import cn.sunnysky.command.impl.CommandDemo;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+
+import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
     private static final String host = "localhost";
     private static final int port = 40000;
     private Socket socket;
+    private IntegratedManager manager;
 
     public ClientBase() throws IOException {
         socket = new Socket(host,port);
-        System.out.println("Client started");
+        manager = new IntegratedManager(Side.CLIENT);
+        logger.log("Client started");
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {
@@ -37,13 +45,15 @@ public class ClientBase {
             Scanner in = new Scanner(System.in);
             while(!(msg = in.nextLine()).equals(" "))
             {
-                wirter.println(msg);
+                if(msg.contentEquals("1000")) manager.sendCmd(CommandDemo.DEMO_ID,wirter);
+                else wirter.println(msg);
                 rsp = reader.readLine();
-                if(rsp.contentEquals("CMD:DEAC")){
-                    System.out.println("Client Shutdown");
+                assert rsp != null;
+                if( rsp.contentEquals("CMD:DEAC")){
+                    logger.log("Client Shutdown");
                     break;
                 }
-                System.out.println(rsp);
+                logger.log(rsp);
             }
         } catch (IOException e) {
             e.printStackTrace();

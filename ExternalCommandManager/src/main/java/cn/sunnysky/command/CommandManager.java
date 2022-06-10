@@ -1,10 +1,9 @@
-package command;
+package cn.sunnysky.command;
 
-import api.ILogger;
-import api.Side;
-import api.SideOnly;
-import api.default_impl.DefaultLogger;
-import command.impl.CommandDemo;
+import cn.sunnysky.api.Side;
+import cn.sunnysky.api.SideOnly;
+import cn.sunnysky.command.impl.CommandDemo;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -12,9 +11,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static cn.sunnysky.IntegratedManager.logger;
+
 public class CommandManager {
     private static ArrayList<Command> Commands;
-    private static ILogger logger = new DefaultLogger();
     private final Side currentSide;
 
     public CommandManager(Side side) {
@@ -25,10 +25,6 @@ public class CommandManager {
     private void init(){
         Commands = new ArrayList<>();
         Commands.add(new CommandDemo());
-    }
-
-    public static ILogger getLogger() {
-        return logger;
     }
 
     private boolean checkSide(Method method){
@@ -57,7 +53,7 @@ public class CommandManager {
         if(checkSide(onSend)) onSend.invoke(cmd, writer);
     }
 
-    public void resolveCmd(String input) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void resolveCmd(String input) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,NullPointerException {
         ArrayList<String> strs = new ArrayList<>();
         Collections.addAll(strs, input.split("-"));
         if(!strs.get(0).contentEquals("CMD")){
@@ -65,17 +61,18 @@ public class CommandManager {
         }
         Command cmd = getCmdById(Integer.parseInt(strs.get(1)));
 
-        assert cmd != null;
         Class<? extends Command> commandClass = cmd.getClass();
         Method onReceive = commandClass.getMethod("onReceive", String[].class);
 
         if(checkSide(onReceive)){
             strs.remove(0);
-            strs.remove(1);
-            onReceive.invoke(cmd,strs.toArray());
+            strs.remove(0);
+            String[] args = strs.toArray(new String[0]);
+            cmd.onReceive(args);
         }
     }
 
+    @Nullable
     private Command getCmdById(int id){
         for (Command c:
              Commands) {

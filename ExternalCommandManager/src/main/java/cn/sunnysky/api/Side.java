@@ -1,4 +1,4 @@
-package api;
+package cn.sunnysky.api;
 
 public enum Side {
     SERVER,
