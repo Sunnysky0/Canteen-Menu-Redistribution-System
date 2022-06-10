@@ -25,7 +25,8 @@ public class CommandDemo extends Command {
 
     @Override
     @SideOnly(value = Side.SERVER)
-    public void onReceive(String... args) {
+    public String onReceive(String... args) {
             logger.log("Demo received");
+            return "Method executed successfully!";
     }
 }

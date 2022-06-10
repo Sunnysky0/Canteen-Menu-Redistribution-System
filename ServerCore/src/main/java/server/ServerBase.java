@@ -7,16 +7,22 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static cn.sunnysky.IntegratedManager.logger;
-public class ServerBase {
+public class ServerBase implements Runnable{
     private static final int port = 40000;
-    private ServerSocket serverSocket;
+    /**
+     * True when running
+     */
+    private static boolean statusFlag = true;
+    private Socket socket;
     private IntegratedManager manager;
 
-    public ServerBase() throws IOException {
-        serverSocket = new ServerSocket(port);
+    public ServerBase(Socket socket){
+        this.socket = socket;
         manager = new IntegratedManager(Side.SERVER);
-        logger.log("Server Started");
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {
@@ -31,15 +37,13 @@ public class ServerBase {
 
         return bufferedReader;
     }
-    public void server() throws IOException
-    {
+
+    @Override
+    public void run() {
         boolean flag = false;
         while(!flag)
         {
-            Socket socket = null;
             try {
-                socket = serverSocket.accept();//Waiting for the client
-                logger.log("Client connected, address: "+socket.getInetAddress()+" Port:"+socket.getPort());
 
                 PrintWriter writer = this.getWriter(socket);
                 BufferedReader reader = this.getReader(socket);
@@ -47,18 +51,18 @@ public class ServerBase {
                 while ((msg = reader.readLine())!=null)
                 {
                     if(msg.contentEquals("CMD:DEAC")){
-                        System.out.println("Server Shutdown");
+                        logger.log("Client disconnected, address: "+socket.getInetAddress()+" Port:"+socket.getPort());
                         writer.println("CMD:DEAC");
                         flag = true;
                         break;
                     }
                     manager.resolveCmd(msg,writer);
-                    logger.log(socket.getInetAddress()+" "+socket.getPort()+" Sent: "+msg);
-                    writer.println("Server recived: " + msg);
                 }
+            //} catch (SocketException e){
+
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 try {
                     if(socket!=null)
                         socket.close();
@@ -67,9 +71,24 @@ public class ServerBase {
                 }
             }
         }
-        serverSocket.close();
     }
-    public static void main(String[] args) throws IOException {
-        new ServerBase().server();
+
+
+    public static void main(String[] args) {
+        ExecutorService executorService = Executors.newFixedThreadPool(31);
+
+        try {
+            ServerSocket serverSocket = new ServerSocket(port);
+            logger.log("Server started");
+
+            while (statusFlag){
+                Socket socket = serverSocket.accept();
+                logger.log("Client connected, address: "+socket.getInetAddress()+" Port:"+socket.getPort());
+                executorService.execute(new ServerBase(socket));
+            }
+            serverSocket.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

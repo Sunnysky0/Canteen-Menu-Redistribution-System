@@ -1,6 +1,7 @@
 package cn.sunnysky;
 
 import cn.sunnysky.api.ILogger;
+import cn.sunnysky.api.LogType;
 import cn.sunnysky.api.Side;
 import cn.sunnysky.api.default_impl.DefaultLogger;
 import cn.sunnysky.command.CommandManager;
@@ -30,11 +31,12 @@ public class IntegratedManager {
 
     public void resolveCmd(String input, PrintWriter writer){
         try {
-            commandManager.resolveCmd(input);
+            commandManager.resolveCmd(input, writer);
         } catch (NoSuchMethodException
                 | IllegalAccessException
                 | InvocationTargetException e) {
             logger.log(e.toString());
+            writer.println(logger.getFormattedLog("Something went wrong unexpectedly", LogType.ERROR));
         } catch (NullPointerException e){
             writer.println("[RSP]: No command matches the input!");
         }

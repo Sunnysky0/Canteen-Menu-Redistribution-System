@@ -48,12 +48,12 @@ public class CommandManager {
 
         assert cmd != null;
         Class<? extends Command> commandClass = cmd.getClass();
-        Method onSend = commandClass.getMethod("onSend", PrintWriter.class);
+        Method onSend = commandClass.getMethod("onSend", PrintWriter.class,String[].class);
 
-        if(checkSide(onSend)) onSend.invoke(cmd, writer);
+        if(checkSide(onSend)) cmd.onSend(writer, (String) null);
     }
 
-    public void resolveCmd(String input) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,NullPointerException {
+    public void resolveCmd(String input,PrintWriter writer) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,NullPointerException {
         ArrayList<String> strs = new ArrayList<>();
         Collections.addAll(strs, input.split("-"));
         if(!strs.get(0).contentEquals("CMD")){
@@ -68,7 +68,7 @@ public class CommandManager {
             strs.remove(0);
             strs.remove(0);
             String[] args = strs.toArray(new String[0]);
-            cmd.onReceive(args);
+            writer.println(cmd.onReceive(args));
         }
     }
 

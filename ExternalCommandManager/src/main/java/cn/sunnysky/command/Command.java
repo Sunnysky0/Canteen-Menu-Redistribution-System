@@ -7,6 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.PrintWriter;
 
 public abstract class Command {
+
+    /**
+     * ID represents the identity code of a particular instance of Command. The default value is 0. So do not use it directly when the instance may not be created.
+     * @author Sunnysky
+     */
     public static int ID = 0;
 
     public Command(int id){
@@ -24,8 +29,9 @@ public abstract class Command {
     /**
      * @author Sunnysky
      * @param args The arguments used by the method for some specific reasons. Normally, it has no elements.
+     * @return The response from the server side after or in the runtime of the method.
      */
     @SideOnly(value = Side.SERVER)
-    public abstract void onReceive(String... args);
+    public abstract String onReceive(String... args);
 
 }
