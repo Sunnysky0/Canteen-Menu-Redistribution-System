@@ -44,7 +44,7 @@ public class ServerBase implements Runnable{
         while(!flag)
         {
             try {
-
+                assert socket != null;
                 PrintWriter writer = this.getWriter(socket);
                 BufferedReader reader = this.getReader(socket);
                 String msg = null;

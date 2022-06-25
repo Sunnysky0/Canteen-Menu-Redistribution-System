@@ -1,8 +1,10 @@
 package cn.sunnysky;
 
+import cn.sunnysky.api.IFileManager;
 import cn.sunnysky.api.ILogger;
 import cn.sunnysky.api.LogType;
 import cn.sunnysky.api.Side;
+import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.api.default_impl.DefaultLogger;
 import cn.sunnysky.command.CommandManager;
 
@@ -11,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class IntegratedManager {
     public static ILogger logger = new DefaultLogger();
+    public static IFileManager fileManager = new DefaultFileManager();
     private final Side currentSide;
     private final CommandManager commandManager;
 

@@ -56,18 +56,23 @@ public class CommandManager {
     public void resolveCmd(String input,PrintWriter writer) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,NullPointerException {
         ArrayList<String> strs = new ArrayList<>();
         Collections.addAll(strs, input.split("-"));
-        if(!strs.get(0).contentEquals("CMD")){
-            //TODO: Handle exception
+        String id = null;
+        String args = null;
+        for(String str:strs){
+            if(str.startsWith("CMD")){
+                id=str.split(":")[1];
+            } else if (str.startsWith("ARGS")){
+                args=str.split(":")[1];
+            }
         }
-        Command cmd = getCmdById(Integer.parseInt(strs.get(1)));
+
+        assert id != null;
+        Command cmd = getCmdById(Integer.parseInt(id));
 
         Class<? extends Command> commandClass = cmd.getClass();
         Method onReceive = commandClass.getMethod("onReceive", String[].class);
 
         if(checkSide(onReceive)){
-            strs.remove(0);
-            strs.remove(0);
-            String[] args = strs.toArray(new String[0]);
             writer.println(cmd.onReceive(args));
         }
     }

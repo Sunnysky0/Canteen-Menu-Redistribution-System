@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 
+
 public abstract class Command {
 
     /**
@@ -29,7 +30,7 @@ public abstract class Command {
     /**
      * @author Sunnysky
      * @param args The arguments used by the method for some specific reasons. Normally, it has no elements.
-     * @return The response from the server side after or in the runtime of the method.
+     * @return The response from the server side after or during the runtime of the method.
      */
     @SideOnly(value = Side.SERVER)
     public abstract String onReceive(String... args);

@@ -20,13 +20,13 @@ public class CommandDemo extends Command {
     @Override
     @SideOnly(value = Side.CLIENT)
     public void onSend(@NotNull PrintWriter writer,String... args) {
-        writer.println("CMD-" + DEMO_ID);
+        writer.println("CMD:" + DEMO_ID + "-" + "ARGS:NULL");
     }
 
     @Override
     @SideOnly(value = Side.SERVER)
     public String onReceive(String... args) {
             logger.log("Demo received");
-            return "Method executed successfully!";
+            return "Command executed successfully!";
     }
 }
