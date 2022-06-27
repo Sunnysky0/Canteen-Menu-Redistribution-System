@@ -1,7 +1,7 @@
 package client;
 
 import cn.sunnysky.IntegratedManager;
-import cn.sunnysky.api.Side;
+import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.command.impl.CommandDemo;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    private static final String host = "localhost";
+    private static final String host = "192.168.1.11";
     private static final int port = 40000;
     private Socket socket;
     private IntegratedManager manager;
@@ -45,11 +45,14 @@ public class ClientBase {
             Scanner in = new Scanner(System.in);
             while(!(msg = in.nextLine()).equals(" "))
             {
-                if(msg.contentEquals("1000")) manager.sendCmd(CommandDemo.DEMO_ID,wirter);
-                else wirter.println(msg);
+                String[] temp = msg.split(":");
+
+                assert temp.length > 1;
+                String[] args = temp[1].split(",");
+                manager.sendCmd(Integer.parseInt(temp[0]),wirter,args);
                 rsp = reader.readLine();
                 assert rsp != null;
-                if( rsp.contentEquals("CMD:DEAC")){
+                if( rsp.contentEquals("DEACTIVATE")){
                     logger.log("Client Shutdown");
                     break;
                 }

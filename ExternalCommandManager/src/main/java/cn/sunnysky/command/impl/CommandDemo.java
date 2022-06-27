@@ -1,9 +1,8 @@
 package cn.sunnysky.command.impl;
 
-import cn.sunnysky.api.Side;
-import cn.sunnysky.api.SideOnly;
+import cn.sunnysky.api.annotation.Side;
+import cn.sunnysky.api.annotation.SideOnly;
 import cn.sunnysky.command.Command;
-import cn.sunnysky.command.CommandManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;

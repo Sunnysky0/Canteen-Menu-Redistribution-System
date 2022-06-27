@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">StudentClient</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Sunnysky Software</string>
+    <string name="nav_header_subtitle">sunnysky1226@hotmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">设置</string>
+
+    <string name="menu_home">主页</string>
+    <string name="menu_uploader">菜单上传</string>
+    <string name="menu_information_bar">申请通道</string>
+</resources>

@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/ClientCore" />
             <option value="$PROJECT_DIR$/ExternalCommandManager" />
             <option value="$PROJECT_DIR$/ServerCore" />
+            <option value="$PROJECT_DIR$/StudentClient" />
           </set>
         </option>
       </GradleProjectSettings>

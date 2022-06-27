@@ -2,4 +2,6 @@ rootProject.name = 'Cantenn Menu Redistribution System'
 include ':ExternalCommandManager',':ClientCore'
 include ':ServerCore'
 
-
+include ':StudentClient'
+include ':StudentClient'
+include ':StudentClient'

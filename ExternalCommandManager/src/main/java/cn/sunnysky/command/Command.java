@@ -1,7 +1,7 @@
 package cn.sunnysky.command;
 
-import cn.sunnysky.api.Side;
-import cn.sunnysky.api.SideOnly;
+import cn.sunnysky.api.annotation.Side;
+import cn.sunnysky.api.annotation.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
@@ -13,7 +13,7 @@ public abstract class Command {
      * ID represents the identity code of a particular instance of Command. The default value is 0. So do not use it directly when the instance may not be created.
      * @author Sunnysky
      */
-    public static int ID = 0;
+    public final int ID;
 
     public Command(int id){
         ID =id;

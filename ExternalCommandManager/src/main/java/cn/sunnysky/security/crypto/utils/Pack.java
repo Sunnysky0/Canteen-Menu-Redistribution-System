@@ -132,7 +132,6 @@ public abstract class Pack {
 
     }
 
-    /** @deprecated */
     public static void longToBigEndian(long var0, byte[] var2, int var3, int var4) {
         for(int var5 = var4 - 1; var5 >= 0; --var5) {
             var2[var5 + var3] = (byte)((int)(var0 & 255L));

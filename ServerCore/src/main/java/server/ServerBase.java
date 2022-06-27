@@ -1,12 +1,13 @@
 package server;
 
 import cn.sunnysky.IntegratedManager;
-import cn.sunnysky.api.Side;
+import cn.sunnysky.api.annotation.Side;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,17 +50,10 @@ public class ServerBase implements Runnable{
                 BufferedReader reader = this.getReader(socket);
                 String msg = null;
                 while ((msg = reader.readLine())!=null)
-                {
-                    if(msg.contentEquals("CMD:DEAC")){
-                        logger.log("Client disconnected, address: "+socket.getInetAddress()+" Port:"+socket.getPort());
-                        writer.println("CMD:DEAC");
-                        flag = true;
-                        break;
-                    }
-                    manager.resolveCmd(msg,writer);
-                }
-            //} catch (SocketException e){
-
+                    manager.resolveCmd(msg, writer);
+            } catch (SocketException e){
+                logger.log("Client disconnected.");
+                flag = true;
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

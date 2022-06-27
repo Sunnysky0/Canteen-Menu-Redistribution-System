@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.1"
+    }
+}
+
 plugins {
     id 'groovy'
     id 'java'
@@ -7,6 +18,7 @@ group 'cn.sunnysky'
 version '1.0-SNAPSHOT'
 
 repositories {
+    google()
     mavenCentral()
 }
 
@@ -17,7 +29,6 @@ dependencies {
 }
 
 allprojects {
-    apply plugin: 'java'//必须放最上面
     sourceCompatibility = 1.8
     group 'cn.sunnysky'
     version '1.0-SNAPSHOT'

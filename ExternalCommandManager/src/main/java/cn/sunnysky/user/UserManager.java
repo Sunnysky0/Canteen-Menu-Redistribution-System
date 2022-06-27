@@ -1,20 +1,32 @@
 package cn.sunnysky.user;
 
 import cn.sunnysky.IntegratedManager;
+import cn.sunnysky.api.annotation.Side;
+import cn.sunnysky.api.annotation.SideOnly;
 import cn.sunnysky.security.SecurityManager;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
+
+import static cn.sunnysky.user.UserPermission.UNKNOWN;
 
 public class UserManager {
-    private ArrayList<User> allUsers = new ArrayList<>();
+    private ArrayList<User> registeredUsers = new ArrayList<>();
     private static final String INDEX = "user_index";
+    private static User defaultUser;
 
     public UserManager() {
         initialize();
+        defaultUser = new User("default",UNKNOWN,"default");
+    }
+
+    @NotNull
+    @SideOnly(value = Side.CLIENT)
+    public User getDefaultUser(){
+        return defaultUser;
     }
 
     private void initialize(){
@@ -31,22 +43,22 @@ public class UserManager {
         assert map != null;
         User user = new User(map.get("UUID"),UserPermission.valueOf(map.get("AUTH")),map.get("USN"));
         user.changePwd(map.get("PWD"));
-        allUsers.add(user);
+        registeredUsers.add(user);
     }
 
     @Nullable
     public User findUserByName(String userName){
         for (User u:
-             allUsers) {
+                registeredUsers) {
             if(u.userName.contentEquals(userName)) return u;
         }
         return null;
     }
 
-    public void createNewUser(String userName,UserPermission permission,String encryptedPwd){
+    public boolean createNewUser(String userName,UserPermission permission,String encryptedPwd){
         if(findUserByName(userName) != null){
             IntegratedManager.logger.log("Username already exists!");
-            return;
+            return false;
         }
         String timeStamp = IntegratedManager.logger.getFormattedTime();
         String UUID = SecurityManager.hashNTLM(userName + "-" + timeStamp);
@@ -64,19 +76,23 @@ public class UserManager {
 
         User user = new User(UUID,permission,userName);
         user.changePwd(encryptedPwd);
-        allUsers.add(user);
+        registeredUsers.add(user);
+
+        return true;
     }
 
     public String login(String userName, String encryptedPwd){
         User u = findUserByName(userName);
+
+        if(u == null) return "ERR: Not registered!";
         if(u.encryptedPwd.contentEquals(encryptedPwd)){
             String code =SecurityManager.hashNTLM(u.UUID + "-" +
                     IntegratedManager.logger.getFormattedTime());
-            allUsers.remove(u);
-            allUsers.add(u.activate(code));
+            registeredUsers.remove(u);
+            registeredUsers.add(u.activate(code));
             return code;
         }
-        return "Incorrect password!";
+        return "ERR: Incorrect password!";
     }
 
     public static void main(String[] args) {

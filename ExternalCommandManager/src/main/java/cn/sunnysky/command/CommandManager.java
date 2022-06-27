@@ -1,8 +1,11 @@
 package cn.sunnysky.command;
 
-import cn.sunnysky.api.Side;
-import cn.sunnysky.api.SideOnly;
+import cn.sunnysky.api.annotation.Side;
+import cn.sunnysky.api.annotation.SideOnly;
 import cn.sunnysky.command.impl.CommandDemo;
+import cn.sunnysky.command.impl.CommandDisconnect;
+import cn.sunnysky.command.impl.CommandLogin;
+import cn.sunnysky.command.impl.CommandRegister;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.PrintWriter;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static cn.sunnysky.IntegratedManager.logger;
+import static cn.sunnysky.security.SideChecker.checkSide;
 
 public class CommandManager {
     private static ArrayList<Command> Commands;
@@ -25,44 +29,33 @@ public class CommandManager {
     private void init(){
         Commands = new ArrayList<>();
         Commands.add(new CommandDemo());
+        Commands.add( new CommandLogin());
+        Commands.add( new CommandRegister());
+        Commands.add( new CommandDisconnect());
     }
 
-    private boolean checkSide(Method method){
-        if(method.isAnnotationPresent(SideOnly.class)){
-            SideOnly sideOnly = method.getAnnotation(SideOnly.class);
-            if(sideOnly.value() == currentSide) return true;
-            else {
-                logger.log("Incorrect invoke of method! A " + sideOnly.value().toString() +
-                        " side method can only be invoked from " + sideOnly.value().toString()
-                );
-            }
-        }else {
-            logger.log("The method is not annotated");
-            return true;
-        }
-        return false;
-    }
 
-    public void sendCmd(int id, PrintWriter writer) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+    public void sendCmd(int id, PrintWriter writer,String... args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Command cmd = getCmdById(id);
 
         assert cmd != null;
         Class<? extends Command> commandClass = cmd.getClass();
         Method onSend = commandClass.getMethod("onSend", PrintWriter.class,String[].class);
 
-        if(checkSide(onSend)) cmd.onSend(writer, (String) null);
+        if(checkSide(onSend)) cmd.onSend(writer, args);
     }
 
     public void resolveCmd(String input,PrintWriter writer) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,NullPointerException {
         ArrayList<String> strs = new ArrayList<>();
         Collections.addAll(strs, input.split("-"));
         String id = null;
-        String args = null;
+        String[] args = null;
         for(String str:strs){
             if(str.startsWith("CMD")){
                 id=str.split(":")[1];
             } else if (str.startsWith("ARGS")){
-                args=str.split(":")[1];
+                args=str.split(":")[1].split(",");
             }
         }
 

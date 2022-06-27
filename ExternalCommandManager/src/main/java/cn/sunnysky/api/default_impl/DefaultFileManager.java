@@ -10,17 +10,20 @@ import java.util.Map;
 import java.util.Objects;
 
 public class DefaultFileManager implements IFileManager {
-    private static final String PREFIX = "data/";
+    private final String PREFIX;
+    private final String DATA_FOLDER;
     private static final String INDEX = "INDEX";
     private static final String SUFFIX = ".cfg";
 
-    public DefaultFileManager(){
+    public DefaultFileManager(String dataFolder){
+        DATA_FOLDER = dataFolder;
+        this.PREFIX = DATA_FOLDER + "/";
         initialize();
     }
 
     @Override
     public void initialize() {
-        File prefix = new File("data");
+        File prefix = new File(DATA_FOLDER);
         if(!prefix.exists())
             prefix.mkdir();
 
@@ -127,7 +130,7 @@ public class DefaultFileManager implements IFileManager {
         Map<String,String> testMap = new HashMap<>();
         testMap.put("Vivi", "Student");
         testMap.put("Alice", "Friend");
-        IFileManager fileManager = new DefaultFileManager();
+        IFileManager fileManager = new DefaultFileManager("data");
         fileManager.createNewFileInstance("ALS");
         fileManager.writeSerializedData(testMap,"ALS");
         IntegratedManager.logger.log(
