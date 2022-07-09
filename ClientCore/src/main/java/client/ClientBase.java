@@ -11,7 +11,7 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    private static final String host = "192.168.1.11";
+    private static final String host = "localhost";
     private static final int port = 40000;
     private Socket socket;
     private IntegratedManager manager;

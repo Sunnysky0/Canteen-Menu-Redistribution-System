@@ -5,6 +5,10 @@ import cn.sunnysky.api.IFileManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -79,10 +83,22 @@ public class DefaultFileManager implements IFileManager {
     public <K,V> void  writeSerializedData(Map<K,V> data, String targetFile) {
         if(!fileIndex.contains(targetFile)) createNewFileInstance(targetFile);
         String path = PREFIX + targetFile + SUFFIX;
+        writeSerializedData(data, new File(path).toURI());
+    }
+
+
+
+    public <K,V> void  writeSerializedData(Map<K,V> data, URI fileLocation) {
+        File targetFile = new File(fileLocation);
+
+        if(!targetFile.exists()){
+            IntegratedManager.logger.log("File does not exist!");
+            return;
+        }
         try {
             BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(path,true)));
+                    new OutputStreamWriter(
+                            new FileOutputStream(targetFile.getPath(),true)));
             try{
 
                 for(K key : data.keySet()){
@@ -104,11 +120,25 @@ public class DefaultFileManager implements IFileManager {
     @Override
     @Nullable
     public Map readSerializedDataFromFile(String fileName) {
-        if(!fileIndex.contains(fileName)){
+        try {
+            return
+                    this.readSerializedDataFromFile(
+                            (new File(PREFIX + fileName + SUFFIX)).toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Nullable
+    public Map readSerializedDataFromFile(URI fileLocation) throws URISyntaxException {
+
+        File targetFile = new File(fileLocation);
+
+        if(!targetFile.exists()){
             IntegratedManager.logger.log("File does not exist!");
             return null;
         }
-        File targetFile = new File(PREFIX + fileName + SUFFIX);
         Map<String,String> result = new HashMap<>();
         try {
             BufferedReader reader = new BufferedReader(

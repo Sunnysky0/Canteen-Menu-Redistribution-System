@@ -29,6 +29,7 @@ public class UserManager {
         return defaultUser;
     }
 
+    @SuppressWarnings("NewApi")
     private void initialize(){
         IntegratedManager.fileManager.createNewFileInstance(INDEX);
         Map<String,String> map = IntegratedManager.fileManager.readSerializedDataFromFile(INDEX);
@@ -128,7 +129,8 @@ public class UserManager {
         }
     }
 
-    public class ActiveUser extends User{
+
+    public final class ActiveUser extends User{
 
         private String temporaryUserActivationCode = null;
 
