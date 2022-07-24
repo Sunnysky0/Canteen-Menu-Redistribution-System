@@ -1,4 +1,4 @@
-package model;
+package cn.sunnysky.model;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +42,7 @@ public class DTree<T> {
      * Print the entire tree recursively.
      * @param layer The white space you want to assign.
      */
+    @SuppressWarnings("NewApi")
     public void visualize(int layer){
         System.out.print("|-");
         for(int i = 0; i < layer * 2;i++)
@@ -77,6 +78,7 @@ public class DTree<T> {
      * @param <R> The return type of the function, it cannot be null.
      * @return The return value of the function you give to the method.
      */
+    @SuppressWarnings("NewApi")
     public <R> R modifyData(Function<T,R> action){
         return action.apply(this.data);
     }
@@ -107,22 +109,26 @@ public class DTree<T> {
         return data;
     }
 
+    @SuppressWarnings("NewApi")
     @Nullable
     public <S> DTree<T> customSearch(@NotNull Function<S,DTree<T>> comparator, S object){
         return comparator.apply(object);
     }
 
+
     /**
      * Search for a particular DTree node (in the whole tree) according to the comparator function you send.
-     * @param comparator A function which accepts a particular type of data and returns the result as a DTree node.
+     * @param comparator A function which accepts a particular type of data (S) and returns the result as a DTree node.
      * @param object The data which is given to the comparator.
+     * @param recursionDataConverter A function that converts the recursion data (the children of the current result) to S.
      * @param <S> The particular data type, mostly is a DTree array.
      * @return The final result after the recursive search.
      */
+    @SuppressWarnings("NewApi")
     @Nullable
-    public final <S> DTree<T> customSearchRecursively(@NotNull Function<S,DTree<T>> comparator,@NotNull S object){
+    public final <S> DTree<T> customSearchRecursively(@NotNull Function<S,DTree<T>> comparator,@NotNull S object,@NotNull Function<DTree<T>,S> recursionDataConverter){
         DTree<T> result = comparator.apply(object);
-        if(isLeaf(result)) return result.customSearchRecursively(comparator, (S) result.getChildren().toArray(new DTree[0]));
+        if(isLeaf(result)) return result.customSearchRecursively(comparator, recursionDataConverter.apply(result),recursionDataConverter);
         return result;
     }
 }

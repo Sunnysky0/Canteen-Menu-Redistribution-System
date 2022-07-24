@@ -1,7 +1,7 @@
-package controller;
+package cn.sunnysky.controller;
 
-import model.DTree;
-import model.FoodType;
+import cn.sunnysky.model.DTree;
+import cn.sunnysky.model.FoodType;
 
 import java.util.*;
 import java.util.function.Function;
@@ -19,12 +19,16 @@ public class DTreeController {
                 return true;
             };
 
+    @SuppressWarnings("NewApi")
     private DTree<FoodType> maxPopularity(DTree<FoodType>... data){
         ArrayList<DTree<FoodType>> array = new ArrayList<>();
         Collections.addAll(array,data);
         return Collections.max(array, Comparator.comparingInt(o -> o.getData().popularity));
     }
 
+    private DTree<FoodType>[] convert(DTree<FoodType> recursionData){ return recursionData.getChildren().toArray(new DTree[0]);}
+
+    @SuppressWarnings("NewApi")
     public void addChoice(DTree<FoodType> choice){
         DTree<FoodType> parent = choice.getParent();
         choice.modifyData(addChoiceOption);
@@ -39,6 +43,6 @@ public class DTreeController {
 
     public DTree<FoodType> calculateResult(){
         DTree<FoodType>[] children = dataTree.getChildren().toArray(new DTree[0]);
-        return dataTree.customSearchRecursively(this::maxPopularity,children);
+        return dataTree.customSearchRecursively(this::maxPopularity,children,this::convert);
     }
 }

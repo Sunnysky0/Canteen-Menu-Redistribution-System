@@ -1,4 +1,4 @@
-package model;
+package cn.sunnysky.model;
 
 public class FoodType {
     public volatile int popularity = 0;

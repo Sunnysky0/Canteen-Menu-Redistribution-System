@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class DefaultFileManager implements IFileManager {
     private final String PREFIX;
@@ -23,6 +25,12 @@ public class DefaultFileManager implements IFileManager {
         DATA_FOLDER = dataFolder;
         this.PREFIX = DATA_FOLDER + "/";
         initialize();
+    }
+
+    @SuppressWarnings("Read-Only")
+    public DefaultFileManager() {
+        this.PREFIX = null;
+        this.DATA_FOLDER = null;
     }
 
     @Override
@@ -123,15 +131,25 @@ public class DefaultFileManager implements IFileManager {
         try {
             return
                     this.readSerializedDataFromFile(
-                            (new File(PREFIX + fileName + SUFFIX)).toURI());
+                            (new File(PREFIX + fileName + SUFFIX)).toURI(), null);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * Read serialized data and construct a map according to the data from a specific file.
+     * @param fileLocation The URI for the target file.
+     * @param processor A BiConsumer which reads a data line and extracts specific data and put them in the map.
+     * @param <K> The value type for the key of the map.
+     * @param <V> The value type for the value of the map.
+     * @return A fully-constructed map containing the data.
+     * @throws URISyntaxException
+     */
+    @SuppressWarnings("NewApi")
     @Nullable
-    public Map readSerializedDataFromFile(URI fileLocation) throws URISyntaxException {
+    public <K, V> Map<K, V> readSerializedDataFromFile(URI fileLocation, @Nullable BiConsumer<String,Map<K,V>> processor) throws URISyntaxException {
 
         File targetFile = new File(fileLocation);
 
@@ -139,7 +157,7 @@ public class DefaultFileManager implements IFileManager {
             IntegratedManager.logger.log("File does not exist!");
             return null;
         }
-        Map<String,String> result = new HashMap<>();
+        Map<K, V> result = new HashMap<>();
         try {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
@@ -147,8 +165,12 @@ public class DefaultFileManager implements IFileManager {
             String strTmp = null;
             while ((strTmp = reader.readLine()) != null){
                 if(strTmp.contentEquals("")) continue;
-                String[] temporary = strTmp.split(":");
-                result.put(temporary[0],temporary[1]);
+                if(processor != null)
+                    processor.accept(strTmp,result);
+                else{
+                    String[] temporary = strTmp.split(":");
+                    result.put((K) temporary[0], (V) temporary[1]);
+                }
             }
         } catch ( IOException e) {
             e.printStackTrace();
