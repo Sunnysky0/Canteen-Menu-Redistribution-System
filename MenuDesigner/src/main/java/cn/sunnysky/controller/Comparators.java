@@ -10,8 +10,8 @@ public class Comparators {
     public static final FoodTypeComparator foodTypeComparator
             = new FoodTypeComparator();
 
-    public static final DTreeComparator DTreeComparator
-            = new DTreeComparator(foodTypeComparator);
+    public static final DTreeComparator<FoodType> foodTypeDTreeComparator
+            = new DTreeComparator<FoodType>(foodTypeComparator);
 
     /**
      * Compare by name.
@@ -42,6 +42,8 @@ public class Comparators {
 
         @Override
         public int compare(DTree<T> o1, DTree<T> o2) {
+            if (o1 == null) return -1;
+            else if (o2 == null) return 1;
             return dataComparator.compare(o1.getData(),o2.getData());
         }
     }

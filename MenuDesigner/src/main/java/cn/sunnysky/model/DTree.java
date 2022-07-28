@@ -1,21 +1,22 @@
 package cn.sunnysky.model;
 
+import cn.sunnysky.controller.BinarySearchEngine;
 import cn.sunnysky.controller.Comparators;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.Function;
 
-import static cn.sunnysky.controller.Comparators.DTreeComparator;
-import static cn.sunnysky.controller.Comparators.foodTypeComparator;
+import static cn.sunnysky.controller.Comparators.foodTypeDTreeComparator;
 
 public class DTree<T> {
     private T data;
 
     private SortedList<DTree<T>> children;
+
+    private volatile Comparator<T> dataComparator;
 
     private DTree<T> parent;
 
@@ -27,6 +28,7 @@ public class DTree<T> {
         this.data = data;
         this.children = new SortedList<>(
                 new Comparators.DTreeComparator<>(dataComparator));
+        this.dataComparator = dataComparator;
     }
 
     public boolean isLeaf(DTree<T> tree){
@@ -39,7 +41,7 @@ public class DTree<T> {
     }
 
     public DTree<T> createNode(T data){
-        DTree<T> temp = new DTree<>(data,DTreeComparator);
+        DTree<T> temp = new DTree<>(data, dataComparator);
         addNode(temp);
         return temp;
     }
@@ -69,14 +71,18 @@ public class DTree<T> {
      * @return A DTree node which contains the data, if not, returns null.
      */
     @Nullable
-    public DTree<T> allContains(T data){
+    public DTree<T> getIfContains(T data,Comparator<DTree<T>> comparator){
         if( this.data.equals(data)) return this;
 
-        for(DTree<T> t : children){
-            if(t.contains(data))
-                return t;
-        }
-        return null;
+        return BinarySearchEngine.commonBinarySearch(
+                this.children.toArray(
+                        (DTree<T>[])
+                                Array.newInstance(
+                                        this.getClass(),children.size()
+                                )
+                    ),
+                new DTree<>(data,this.dataComparator),
+                comparator);
     }
 
     /**

@@ -3,12 +3,19 @@ package cn.sunnysky.model;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class DataModelManager<T> {
     private DTree<T> root;
+    private Comparator<DTree<T>> comparator;
 
-    public DataModelManager(DTree<T> root) { this.root = root;}
+    public DataModelManager(DTree<T> root, Comparator<DTree<T>> comparator) {
+        this.root = root;
+        this.comparator = comparator;
+    }
+
+    //public DataModelManager(DTree<T> root) { this.root = root;}
 
     @SuppressWarnings("Only for FoodType values")
     public final void addTreeNode(String target,String... path){
@@ -25,7 +32,7 @@ public class DataModelManager<T> {
         DTree<T> temp = null;
         if(path != null && path.length > 0){
             for(T t : path){
-                if((temp = finalObjectTree.allContains(t)) != null)
+                if((temp = finalObjectTree.getIfContains(t,comparator)) != null)
                     finalObjectTree = temp;
                 else{
                     finalObjectTree = finalObjectTree.createNode(t);

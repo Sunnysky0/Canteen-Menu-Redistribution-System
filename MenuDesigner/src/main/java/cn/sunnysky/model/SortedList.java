@@ -2,9 +2,11 @@ package cn.sunnysky.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A special kind of linked list which
@@ -14,8 +16,9 @@ import java.util.Iterator;
  */
 public class SortedList<T> implements Collection<T> {
 
+
     private LinkableNode<T> dummyHead = new LinkableNode<>(null);
-    private LinkableNode<T> pointedNode = this.dummyHead;
+
 
     private int SIZE = 0;
 
@@ -27,6 +30,7 @@ public class SortedList<T> implements Collection<T> {
 
     public boolean add(T data){
         add( new LinkableNode<>(data));
+
         return true;
     }
 
@@ -49,6 +53,8 @@ public class SortedList<T> implements Collection<T> {
             else
                 break;
         }
+
+        SIZE--;
         return flag;
     }
 
@@ -63,13 +69,16 @@ public class SortedList<T> implements Collection<T> {
     }
 
     @SuppressWarnings("Operation not supported")
+    @Deprecated
     @Override
     public boolean removeAll(@NotNull Collection<?> c) { throw new UnsupportedOperationException(); }
 
     @SuppressWarnings("Operation not supported")
+    @Deprecated
     @Override
     public boolean retainAll(@NotNull Collection<?> c) { throw new UnsupportedOperationException(); }
 
+    @Deprecated
     @SuppressWarnings("Operation not supported")
     @Override
     public void clear() { throw new UnsupportedOperationException(); }
@@ -122,8 +131,11 @@ public class SortedList<T> implements Collection<T> {
 
     @NotNull
     @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
+    public synchronized Iterator<T> iterator() {
+
+        return new Iterator<>() {
+            private  LinkableNode<T> pointedNode = dummyHead;
+
             @Override
             public boolean hasNext() {
                 return pointedNode.hasNext();
@@ -149,12 +161,13 @@ public class SortedList<T> implements Collection<T> {
         return new Object[0];
     }
 
+    @SuppressWarnings("Input array must fit the size")
     @NotNull
     @Override
     public <ExT> ExT[] toArray(@NotNull ExT[] a) {
         ExT[] array = a;
         int i = 0;
-        for (T t : this){
+        for (T t : this) {
             array[i] = (ExT) t;
             i++;
         }

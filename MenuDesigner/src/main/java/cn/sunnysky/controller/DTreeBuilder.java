@@ -28,8 +28,8 @@ public class DTreeBuilder {
 
     public final DTree<FoodType> buildFromFile(String fileURI){
         DefaultFileManager fileManager = new DefaultFileManager();
-        DTree<FoodType> root = new DTree<>( new FoodType("Root"),Comparators.DTreeComparator);
-        DataModelManager<FoodType> mgr =  new DataModelManager<FoodType>(root);
+        DTree<FoodType> root = new DTree<>( new FoodType("Root"),Comparators.foodTypeComparator);
+        DataModelManager<FoodType> mgr =  new DataModelManager<FoodType>(root,Comparators.foodTypeDTreeComparator);
 
         try {
             Map<String,String[]> data = fileManager.readSerializedDataFromFile(

@@ -26,7 +26,10 @@ public class DTreeController {
         return Collections.max(array, Comparator.comparingInt(o -> o.getData().popularity));
     }
 
-    private DTree<FoodType>[] convert(DTree<FoodType> recursionData){ return recursionData.getChildren().toArray(new DTree[0]);}
+    private DTree<FoodType>[] convert(DTree<FoodType> recursionData){
+        return recursionData.getChildren().toArray(
+            new DTree[recursionData.getChildren().size()]
+    );}
 
     @SuppressWarnings("NewApi")
     public void addChoice(DTree<FoodType> choice){
@@ -42,7 +45,8 @@ public class DTreeController {
     public void addChoice(String choice){ addChoice(new FoodType(choice));}
 
     public DTree<FoodType> calculateResult(){
-        DTree<FoodType>[] children = dataTree.getChildren().toArray(new DTree[0]);
+        DTree<FoodType>[] children = dataTree.getChildren().toArray(
+                new DTree[dataTree.getChildren().size()]);
         return dataTree.customSearchRecursively(this::maxPopularity,children,this::convert);
     }
 }

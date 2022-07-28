@@ -1,5 +1,6 @@
 package cn.sunnysky;
 
+import cn.sunnysky.controller.BinarySearchEngine;
 import cn.sunnysky.controller.Comparators;
 import cn.sunnysky.controller.DTreeBuilder;
 import cn.sunnysky.controller.DTreeController;
@@ -8,14 +9,16 @@ import cn.sunnysky.model.DataModelManager;
 import cn.sunnysky.model.FoodType;
 import cn.sunnysky.model.SortedList;
 
+import java.lang.reflect.Array;
+
 public class StartTest {
     public static void main(String[] args) {
-        new StartTest().test3();
+        new StartTest().test1();
     }
 
     public final void test1(){
-        DTree<FoodType> root = new DTree<>( new FoodType("Base"),Comparators.DTreeComparator);
-        DataModelManager<FoodType> mgr =  new DataModelManager<FoodType>(root);
+        DTree<FoodType> root = new DTree<>( new FoodType("Base"),Comparators.foodTypeComparator);
+        DataModelManager<FoodType> mgr =  new DataModelManager<FoodType>(root,Comparators.foodTypeDTreeComparator);
         DTreeController dTreeController = new DTreeController(root);
 
         mgr.addTreeNode("Layer R","Layer F","Layer S");
@@ -62,5 +65,13 @@ public class StartTest {
         System.out.println("Original: " + list);
         list.remove(new FoodType("Hermione"));
         System.out.println("Modified: " + list);
+
+        System.out.println("Search Result: " +
+                BinarySearchEngine.commonBinarySearch(
+                        list.toArray(
+                                new FoodType[list.size()]
+                        ),
+                        new FoodType("Vivi")
+                        ,Comparators.foodTypeComparator));
     }
 }
