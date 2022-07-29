@@ -5,6 +5,7 @@ import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.annotation.SideOnly;
 import cn.sunnysky.command.Command;
 import cn.sunnysky.user.UserPermission;
+import cn.sunnysky.user.security.SecurityManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
@@ -19,7 +20,7 @@ public class CommandRegister extends Command {
     @Override
     @SideOnly(value = Side.CLIENT)
     public void onSend(@NotNull PrintWriter writer, String... args) {
-        String msg = "CMD:" + REGISTER_ID + "-ARGS:" + args[0] + "," + args[1];
+        String msg = "CMD:" + REGISTER_ID + ";ARGS:" + args[0] + "," + SecurityManager.hashNTLM(args[1]);
         writer.println(msg);
     }
 

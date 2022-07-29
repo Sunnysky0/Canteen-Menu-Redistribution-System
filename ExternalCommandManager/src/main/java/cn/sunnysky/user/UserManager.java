@@ -3,7 +3,7 @@ package cn.sunnysky.user;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.annotation.SideOnly;
-import cn.sunnysky.security.SecurityManager;
+import cn.sunnysky.user.security.SecurityManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +15,7 @@ import static cn.sunnysky.user.UserPermission.UNKNOWN;
 
 public class UserManager {
     private ArrayList<User> registeredUsers = new ArrayList<>();
+    private Map<String,ActiveUser> activeUsers = new HashMap<>();
     private static final String INDEX = "user_index";
     private static User defaultUser;
 
@@ -89,12 +90,24 @@ public class UserManager {
         if(u.encryptedPwd.contentEquals(encryptedPwd)){
             String code =SecurityManager.hashNTLM(u.UUID + "-" +
                     IntegratedManager.logger.getFormattedTime());
-            registeredUsers.remove(u);
-            registeredUsers.add(u.activate(code));
+
+            final ActiveUser activeUser = u.activate(code);
+            activeUsers.put(code,activeUser);
+
             return code;
         }
         return "ERR: Incorrect password!";
     }
+
+    public void logout(String temporaryUserActivationCode){
+        ActiveUser activeUser = activeUsers.get(temporaryUserActivationCode);
+        if (activeUser != null){
+            activeUsers.remove(temporaryUserActivationCode);
+            activeUser.deactivate();
+        }
+    }
+
+    public UserPermission getUserPermission(String temporaryUserActivationCode){ return activeUsers.get(temporaryUserActivationCode).permission;}
 
     public static void main(String[] args) {
         UserManager manager = new UserManager();

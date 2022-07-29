@@ -2,11 +2,9 @@ package cn.sunnysky.model;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * A special kind of linked list which
@@ -165,6 +163,8 @@ public class SortedList<T> implements Collection<T> {
     @NotNull
     @Override
     public <ExT> ExT[] toArray(@NotNull ExT[] a) {
+        if(a.length < SIZE) throw new ArrayStoreException();
+
         ExT[] array = a;
         int i = 0;
         for (T t : this) {

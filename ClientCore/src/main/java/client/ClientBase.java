@@ -3,6 +3,7 @@ package client;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.command.impl.CommandDemo;
+import cn.sunnysky.command.impl.CommandLogin;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    private static final String host = "localhost";
+    private static final String host = "120.48.47.150";
     private static final int port = 40000;
     private Socket socket;
     private IntegratedManager manager;
@@ -47,15 +48,18 @@ public class ClientBase {
             {
                 String[] temp = msg.split(":");
 
-                assert temp.length > 1;
-                String[] args = temp[1].split(",");
+                String[] args;
+                if (temp.length > 1) args = temp[1].split(",");
+                else args = new String[0];
+
                 manager.sendCmd(Integer.parseInt(temp[0]),wirter,args);
                 rsp = reader.readLine();
                 assert rsp != null;
                 if( rsp.contentEquals("DEACTIVATE")){
                     logger.log("Client Shutdown");
                     break;
-                }
+                } else if (Integer.parseInt(temp[0]) == CommandLogin.LOGIN_ID)
+                    IntegratedManager.temporaryUserActivationCode = rsp;
                 logger.log(rsp);
             }
         } catch (IOException e) {

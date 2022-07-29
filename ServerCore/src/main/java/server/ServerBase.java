@@ -2,6 +2,7 @@ package server;
 
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
+import cn.sunnysky.user.UserManager;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -23,7 +24,7 @@ public class ServerBase implements Runnable{
 
     public ServerBase(Socket socket){
         this.socket = socket;
-        manager = new IntegratedManager(Side.SERVER);
+        manager = new IntegratedManager(Side.SERVER,new UserManager());
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {

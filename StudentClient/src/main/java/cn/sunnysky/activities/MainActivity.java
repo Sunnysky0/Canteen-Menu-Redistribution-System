@@ -3,6 +3,7 @@ package cn.sunnysky.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import client.ClientBase;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
 import com.google.android.material.snackbar.Snackbar;
@@ -14,6 +15,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import cn.sunnysky.databinding.ActivityMainBinding;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new Thread(() -> {
+                    try {
+                        StudentClientApplication.client = new ClientBase();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 if(StudentClientApplication.client == null)
                     Snackbar.make(view, "Cannot connect to the server", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

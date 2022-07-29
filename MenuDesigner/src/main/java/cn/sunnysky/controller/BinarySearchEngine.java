@@ -8,7 +8,6 @@ public class BinarySearchEngine {
 
     /**
      * Binary search without recursion.
-     *title:commonBinarySearch
      *@param arr The array you want to search in.
      *@param key The object you want to look for.
      *@return The object you sent itself if it exists, otherwise it would be null.

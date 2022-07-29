@@ -9,8 +9,6 @@ import cn.sunnysky.model.DataModelManager;
 import cn.sunnysky.model.FoodType;
 import cn.sunnysky.model.SortedList;
 
-import java.lang.reflect.Array;
-
 public class StartTest {
     public static void main(String[] args) {
         new StartTest().test1();
@@ -45,7 +43,7 @@ public class StartTest {
     }
 
     public final void test2(){
-        new DTreeBuilder().buildFromFile("/assets/food_data_s1.cfg").visualize(0);
+        new DTreeBuilder().buildFromFile("/assets/food_data_s1.fson").visualize(0);
     }
 
     public final void test3(){

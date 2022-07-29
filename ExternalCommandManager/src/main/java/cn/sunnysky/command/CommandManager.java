@@ -1,7 +1,6 @@
 package cn.sunnysky.command;
 
 import cn.sunnysky.api.annotation.Side;
-import cn.sunnysky.api.annotation.SideOnly;
 import cn.sunnysky.command.impl.CommandDemo;
 import cn.sunnysky.command.impl.CommandDisconnect;
 import cn.sunnysky.command.impl.CommandLogin;
@@ -14,8 +13,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static cn.sunnysky.IntegratedManager.logger;
-import static cn.sunnysky.security.SideChecker.checkSide;
+import static cn.sunnysky.user.security.AnnotationChecker.checkPermission;
+import static cn.sunnysky.user.security.AnnotationChecker.checkSide;
 
 public class CommandManager {
     private static ArrayList<Command> Commands;
@@ -48,15 +47,17 @@ public class CommandManager {
 
     public void resolveCmd(String input,PrintWriter writer) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,NullPointerException {
         ArrayList<String> strs = new ArrayList<>();
-        Collections.addAll(strs, input.split("-"));
+        Collections.addAll(strs, input.split(";"));
         String id = null;
+        String temporaryUserActivationCode = null;
         String[] args = null;
         for(String str:strs){
             if(str.startsWith("CMD")){
                 id=str.split(":")[1];
             } else if (str.startsWith("ARGS")){
                 args=str.split(":")[1].split(",");
-            }
+            } else if (str.startsWith("AUTH"))
+                temporaryUserActivationCode=str.split(":")[1];
         }
 
         assert id != null;
@@ -66,6 +67,10 @@ public class CommandManager {
         Method onReceive = commandClass.getMethod("onReceive", String[].class);
 
         if(checkSide(onReceive)){
+            if(! checkPermission(onReceive,temporaryUserActivationCode)) {
+                writer.println("ERR: Not enough authority");
+                return;
+            }
             writer.println(cmd.onReceive(args));
         }
     }
