@@ -21,9 +21,10 @@ public interface ILogger {
      * @author Sunnysky
      * @param s The original message you want to log.
      * @param type The message type
+     * @throws UnsupportedOperationException When this method is not supported by the instance.
      * @return The message with a specific format, usually contains the time stamp, the log type and the message itself.
      */
-    String getFormattedLog(String s,LogType type);
+    String getFormattedLog(String s,LogType type) throws UnsupportedOperationException;
 
     default String getFormattedTime(){
         Date date = new Date();

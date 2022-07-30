@@ -2,6 +2,7 @@ package server;
 
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
+import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.user.UserManager;
 
 import java.io.*;
@@ -24,7 +25,11 @@ public class ServerBase implements Runnable{
 
     public ServerBase(Socket socket){
         this.socket = socket;
-        manager = new IntegratedManager(Side.SERVER,new UserManager());
+        IntegratedManager.setFileManager(new DefaultFileManager("DATA_OF_SERVER"));
+        manager = new IntegratedManager(
+                Side.SERVER,
+                new UserManager());
+
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {
@@ -70,7 +75,7 @@ public class ServerBase implements Runnable{
 
 
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newFixedThreadPool(31);
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
         try {
             ServerSocket serverSocket = new ServerSocket(port);

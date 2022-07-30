@@ -12,14 +12,14 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    private static final String host = "120.48.47.150";
+    private static final String host = "192.168.1.9";
     private static final int port = 40000;
     private Socket socket;
     private IntegratedManager manager;
 
     public ClientBase() throws IOException {
-        socket = new Socket(host,port);
         manager = new IntegratedManager(Side.CLIENT);
+        socket = new Socket(host,port);
         logger.log("Client started");
     }
 
@@ -68,8 +68,30 @@ public class ClientBase {
             socket.close();
         }
     }
+
+    public String sendCmd(int cmd,String... args) throws IOException {
+        BufferedReader reader = this.getReader(socket);
+        PrintWriter writer = this.getWriter(socket);
+
+        String rsp = null;
+
+        manager.sendCmd(cmd,writer,args);
+        rsp = reader.readLine();
+
+        assert rsp != null;
+        return rsp;
+    }
+
     public static void main(String[] args) throws IOException {
         new ClientBase().talk();
+    }
+
+    public PrintWriter getWriter() throws IOException{
+        return getWriter(this.socket);
+    }
+
+    public BufferedReader getReader() throws IOException{
+        return getReader(this.socket);
     }
 }
 

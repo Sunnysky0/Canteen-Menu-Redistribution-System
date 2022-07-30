@@ -17,7 +17,7 @@ import static cn.sunnysky.user.security.AnnotationChecker.checkSide;
 
 public class IntegratedManager {
     public static ILogger logger = new DefaultLogger();
-    public static IFileManager fileManager = new DefaultFileManager("DATA_OF_SERVER");
+    public static IFileManager fileManager;
     public static Side currentSide = Side.UNKNOWN;
     public static String temporaryUserActivationCode = null;
     private final CommandManager commandManager;
@@ -28,18 +28,28 @@ public class IntegratedManager {
     public IntegratedManager(Side currentSide) {
         this.currentSide = currentSide;
         commandManager = new CommandManager(this.currentSide);
-        fileManager = new DefaultFileManager("DATA_OF_" + this.currentSide.toString());
+        if(fileManager instanceof DefaultFileManager || fileManager == null)
+            fileManager = new DefaultFileManager("DATA_OF_" + this.currentSide.toString());
     }
 
     @SuppressWarnings("Server-side constructor")
     public IntegratedManager(Side currentSide,UserManager userManager) {
         this.currentSide = currentSide;
         commandManager = new CommandManager(this.currentSide);
-        fileManager = new DefaultFileManager("DATA_OF_" + this.currentSide.toString());
+        if( fileManager == null )
+            fileManager = new DefaultFileManager("DATA_OF_" + this.currentSide.toString());
         this.userManager = userManager;
     }
 
-    public void sendCmd(int id, PrintWriter writer,String... args){
+    public static void setLogger(ILogger logger) {
+        IntegratedManager.logger = logger;
+    }
+
+    public static void setFileManager(IFileManager fileManager) {
+        IntegratedManager.fileManager = fileManager;
+    }
+
+    public void sendCmd(int id, PrintWriter writer, String... args){
         try {
             commandManager.sendCmd(id,writer,args);
         } catch (NoSuchMethodException

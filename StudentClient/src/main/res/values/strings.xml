@@ -10,4 +10,16 @@
     <string name="menu_home">主页</string>
     <string name="menu_uploader">菜单上传</string>
     <string name="menu_information_bar">申请通道</string>
+
+    <string name="username_label">用户名：</string>
+    <string name="pw_label">密码：</string>
+    <string name="login_label">登录</string>
+    <string name="exit_label">退出</string>
+    <string name="visualization_pw_label">显示密码</string>
+    <string name="reg_label">注册</string>
+    <string name="remember_information">记住信息</string>
+    <string name="login_success">登陆成功</string>
+    <string name="network_failure">网络错误，请重试</string>
+
+
 </resources>
