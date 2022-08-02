@@ -3,6 +3,8 @@ package cn.sunnysky.api;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static cn.sunnysky.api.LogType.INFORMATION;
+
 public interface ILogger {
 
     /**
@@ -14,7 +16,7 @@ public interface ILogger {
     void log(String s,LogType type);
 
     default void log(String s){
-        log(s,LogType.INFORMATION);
+        log(s,INFORMATION);
     }
 
     /**

@@ -64,13 +64,15 @@ public class StudentClientApplication extends Application implements IFileManage
         IntegratedManager.setFileManager(this);
 
         executorService = Executors.newCachedThreadPool();
-
         try {
-            internalNetworkHandler = new NetworkHandler();
+            initializeNetwork();
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void initializeNetwork() throws NetworkErrorException {
+            internalNetworkHandler = new NetworkHandler();
     }
 
     public static void join(@NotNull Runnable r){ executorService.execute(r);}
@@ -128,13 +130,8 @@ public class StudentClientApplication extends Application implements IFileManage
             if (c != null) {
                 while (c.moveToNext())
                     map.put(c.getString(0),c.getString(1));
-
                 c.close();
-                Database.close();
                 return map;
-            } else {
-                c.close();
-                Database.close();
             }
         } else IntegratedManager.logger.log("Table does not exist");
 

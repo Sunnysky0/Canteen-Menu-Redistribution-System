@@ -27,7 +27,7 @@ public class NetworkHandler {
         final Boolean[] flag = {null};
 
         StudentClientApplication.join(
-                new Thread(() -> {
+                () -> {
                     try {
                         this.client = new ClientBase();
 
@@ -38,7 +38,8 @@ public class NetworkHandler {
                         e.printStackTrace();
                     }
                 }
-        ));
+        );
+
 
         while(flag[0] == null)
             IntegratedManager.logger.log("Connecting to server");

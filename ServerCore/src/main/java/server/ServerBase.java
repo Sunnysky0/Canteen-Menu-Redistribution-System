@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import java.net.SocketException;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,11 +21,11 @@ public class ServerBase implements Runnable{
      * True when running
      */
     private static boolean statusFlag = true;
-    private Socket socket;
+    private Socket socketa;
     private IntegratedManager manager;
 
     public ServerBase(Socket socket){
-        this.socket = socket;
+        this.socketa = socket;
         IntegratedManager.setFileManager(new DefaultFileManager("DATA_OF_SERVER"));
         manager = new IntegratedManager(
                 Side.SERVER,
@@ -51,9 +52,9 @@ public class ServerBase implements Runnable{
         while(!flag)
         {
             try {
-                assert socket != null;
-                PrintWriter writer = this.getWriter(socket);
-                BufferedReader reader = this.getReader(socket);
+                assert socketa != null;
+                PrintWriter writer = this.getWriter(socketa);
+                BufferedReader reader = this.getReader(socketa);
                 String msg = null;
                 while ((msg = reader.readLine())!=null)
                     manager.resolveCmd(msg, writer);
@@ -64,8 +65,8 @@ public class ServerBase implements Runnable{
                 e.printStackTrace();
             } finally {
                 try {
-                    if(socket!=null)
-                        socket.close();
+                    if(socketa!=null)
+                        socketa.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -73,20 +74,59 @@ public class ServerBase implements Runnable{
         }
     }
 
+    private static void processCmd(){
+        String msg;
+        Scanner in = new Scanner(System.in);
+        while(!(msg = in.nextLine()).equals(" "))
+        {
+            if (msg.equalsIgnoreCase("stop")){
+                logger.log("Server shutdown");
+                statusFlag = false;
 
-    public static void main(String[] args) {
-        ExecutorService executorService = Executors.newCachedThreadPool();
+                break;
+            }
 
-        try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            logger.log("Server started");
+        }
 
-            while (statusFlag){
-                Socket socket = serverSocket.accept();
-                logger.log("Client connected, address: "+socket.getInetAddress()+" Port:"+socket.getPort());
+    }
+
+    static Socket socket;
+    static ServerSocket serverSocket;
+    public static void connect() {
+        if (serverSocket != null && !serverSocket.isClosed())
+            try {
+                socket = serverSocket.accept();
+                logger.log("Client connected, address: "+ socket.getInetAddress()+" Port:"+socket.getPort());
                 executorService.execute(new ServerBase(socket));
             }
+            catch (SocketException e){
+                logger.log("Unable to establish connection");
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+    }
+
+    static ExecutorService executorService = Executors.newCachedThreadPool();
+    public static void main(String[] args) {
+
+
+        try {
+            serverSocket = new ServerSocket(port);
+            logger.log("Server started");
+
+            //executorService.execute(ServerBase::processCmd);
+
+            while (statusFlag)
+                executorService .execute(ServerBase::connect);
+
+
+            executorService.shutdown();
             serverSocket.close();
+
+            System.exit(0);
+
         }catch (Exception e){
             e.printStackTrace();
         }
