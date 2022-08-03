@@ -83,6 +83,14 @@ public class ServerBase implements Runnable{
                 logger.log("Server shutdown");
                 statusFlag = false;
 
+                executorService.shutdown();
+
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             }
 
@@ -92,20 +100,21 @@ public class ServerBase implements Runnable{
 
     static Socket socket;
     static ServerSocket serverSocket;
-    public static void connect() {
-        if (serverSocket != null && !serverSocket.isClosed())
-            try {
-                socket = serverSocket.accept();
-                logger.log("Client connected, address: "+ socket.getInetAddress()+" Port:"+socket.getPort());
-                executorService.execute(new ServerBase(socket));
-            }
-            catch (SocketException e){
-                logger.log("Unable to establish connection");
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+    static boolean isAccepting = false;
+    static void accept(){
+        isAccepting = true;
 
+        try {
+            socket = serverSocket.accept();
+        }
+        catch (SocketException e){
+            logger.log("Unable to establish connection");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        isAccepting = false;
     }
 
     static ExecutorService executorService = Executors.newCachedThreadPool();
@@ -116,14 +125,27 @@ public class ServerBase implements Runnable{
             serverSocket = new ServerSocket(port);
             logger.log("Server started");
 
-            //executorService.execute(ServerBase::processCmd);
+            executorService.execute(ServerBase::processCmd);
 
-            while (statusFlag)
-                executorService .execute(ServerBase::connect);
+            while (statusFlag){
+                if (serverSocket != null && !serverSocket.isClosed()) {
 
+                    executorService.execute(ServerBase::accept);
 
-            executorService.shutdown();
-            serverSocket.close();
+                    isAccepting = true;
+                    while (isAccepting && !executorService.isShutdown())
+                        continue;
+
+                    if (socket == null || executorService.isShutdown()){
+                        logger.log("Network failure");
+                        continue;
+                    }
+
+                    logger.log("Client connected, address: " + socket.getInetAddress() + " Port:" + socket.getPort());
+                    executorService.execute(new ServerBase(socket));
+                }
+
+            }
 
             System.exit(0);
 

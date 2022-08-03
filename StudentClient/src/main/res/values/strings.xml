@@ -23,6 +23,8 @@
     <string name="login_msg_head">用户系统</string>
     <string name="login_failure">登陆失败</string>
     <string name="confirm">确认</string>
+    <string name="cannot_connect">无法连接至服务器</string>
+    <string name="connection_established">已连接至服务器</string>
 
 
 </resources>

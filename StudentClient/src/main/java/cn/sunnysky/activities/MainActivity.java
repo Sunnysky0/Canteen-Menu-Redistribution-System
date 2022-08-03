@@ -1,5 +1,6 @@
 package cn.sunnysky.activities;
 
+import android.accounts.NetworkErrorException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -16,7 +17,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import cn.sunnysky.databinding.ActivityMainBinding;
 
+import java.io.File;
 import java.io.IOException;
+
+import static cn.sunnysky.IntegratedManager.logger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,18 +38,38 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Thread(() -> {
+                File path = new File("/data/data/cn.sunnysky/transferred");
+
+                if ( ! path.exists())
+                    path.mkdirs();
+
+                File file = new File("/data/data/cn.sunnysky/transferred/surprise.exe");
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                logger.log(path.toURI().getPath());
+
+                final boolean[] flag = {true};
+
+                Runnable r = () -> {
                     try {
-                        StudentClientApplication.client = new ClientBase();
-                    } catch (IOException e) {
+                        StudentClientApplication.initializeNetwork();
+                    } catch (NetworkErrorException e) {
                         e.printStackTrace();
+                        flag[0] = false;
                     }
-                }).start();
-                if(StudentClientApplication.client == null)
-                    Snackbar.make(view, "Cannot connect to the server", Snackbar.LENGTH_LONG)
+                };
+
+                StudentClientApplication.join(r);
+
+                if(!flag[0] || StudentClientApplication.internalNetworkHandler == null)
+                    Snackbar.make(view, R.string.cannot_connect, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 else
-                    Snackbar.make(view, "Server connected", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, R.string.connection_established, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
             }
         });

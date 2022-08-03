@@ -23,8 +23,6 @@ import java.util.concurrent.Executors;
 
 public class StudentClientApplication extends Application implements IFileManager {
 
-    public static ClientBase client;
-
     public static NetworkHandler internalNetworkHandler;
 
     private static ExecutorService executorService;
@@ -41,10 +39,13 @@ public class StudentClientApplication extends Application implements IFileManage
             switch (type){
                 case ERROR:
                     Log.e("ERR",s);
+                    break;
                 case INFORMATION:
                     Log.i("INFORMATION",s);
+                    break;
                 case WARNING:
                     Log.w("WARNING",s);
+                    break;
             }
         }
 
@@ -72,6 +73,7 @@ public class StudentClientApplication extends Application implements IFileManage
     }
 
     public static void initializeNetwork() throws NetworkErrorException {
+        if (internalNetworkHandler == null)
             internalNetworkHandler = new NetworkHandler();
     }
 

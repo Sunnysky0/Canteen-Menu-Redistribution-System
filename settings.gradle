@@ -3,7 +3,5 @@ include ':ExternalCommandManager',':ClientCore'
 include ':ServerCore'
 
 include ':StudentClient'
-include ':StudentClient'
-include ':StudentClient'
-include 'MenuDesigner'
+include ':MenuDesigner'
 

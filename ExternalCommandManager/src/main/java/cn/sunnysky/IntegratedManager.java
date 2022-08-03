@@ -66,7 +66,7 @@ public class IntegratedManager {
                 | IllegalAccessException
                 | InvocationTargetException e) {
             logger.log(e.toString());
-            writer.println(logger.getFormattedLog("Something went wrong unexpectedly", LogType.ERROR));
+            writer.println("ERR: Something went wrong unexpectedly");
         } catch (NullPointerException e){
             e.printStackTrace(writer);
         }

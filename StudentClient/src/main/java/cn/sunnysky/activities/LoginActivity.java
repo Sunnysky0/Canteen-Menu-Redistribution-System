@@ -81,9 +81,11 @@ public class LoginActivity extends AppCompatActivity {
 
             if (rsp.startsWith("ERR") || rsp.length() != 32)
                 new LoginMessageNotification(false).show(getSupportFragmentManager(),"");
-            else
-                new LoginMessageNotification(true).show(getSupportFragmentManager(),"");
-
+            else{
+                Intent intent = new Intent();
+                intent.setClass(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
