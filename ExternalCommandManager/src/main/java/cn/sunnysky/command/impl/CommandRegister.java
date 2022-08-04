@@ -5,7 +5,7 @@ import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.annotation.SideOnly;
 import cn.sunnysky.command.Command;
 import cn.sunnysky.user.UserPermission;
-import cn.sunnysky.user.security.SecurityManager;
+import cn.sunnysky.security.SecurityManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;

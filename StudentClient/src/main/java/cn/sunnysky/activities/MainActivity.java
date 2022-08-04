@@ -1,7 +1,9 @@
 package cn.sunnysky.activities;
 
 import android.accounts.NetworkErrorException;
+import android.content.Context;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Menu;
 import client.ClientBase;
@@ -38,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File path = new File("/data/data/cn.sunnysky/transferred");
+                File path = new File(getFilesDir().getPath() + "/download");
 
                 if ( ! path.exists())
                     path.mkdirs();
 
-                File file = new File("/data/data/cn.sunnysky/transferred/surprise.exe");
+                File file = new File(getFilesDir().getPath() + "/download/falcon.exe");
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -68,9 +70,27 @@ public class MainActivity extends AppCompatActivity {
                 if(!flag[0] || StudentClientApplication.internalNetworkHandler == null)
                     Snackbar.make(view, R.string.cannot_connect, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                else
+                else{
                     Snackbar.make(view, R.string.connection_established, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
+                    Snackbar.make(view, R.string.file_transferring, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    r = () -> {
+                        final boolean b = StudentClientApplication.internalNetworkHandler.transferRemoteFile(
+                                "food_data_s1.fson", getFilesDir().getPath() + "/download");
+                        if (b)
+                            Snackbar.make(view, R.string.file_transferred, Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        else Snackbar.make(view, R.string.ftp_failure, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    };
+
+                    StudentClientApplication.join(r);
+                    // new Thread(r).start();
+                }
+
             }
         });
         DrawerLayout drawer = binding.drawerLayout;

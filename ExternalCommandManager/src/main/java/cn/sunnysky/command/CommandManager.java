@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static cn.sunnysky.user.security.AnnotationChecker.checkPermission;
-import static cn.sunnysky.user.security.AnnotationChecker.checkSide;
+import static cn.sunnysky.security.AnnotationChecker.checkPermission;
+import static cn.sunnysky.security.AnnotationChecker.checkSide;
 
 public class CommandManager {
     private static ArrayList<Command> Commands;
@@ -33,7 +33,7 @@ public class CommandManager {
         Commands.add( new CommandDisconnect());
     }
 
-
+    public void registerCmd(Command cmd){ Commands.add(cmd); }
 
     public void sendCmd(int id, PrintWriter writer,String... args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Command cmd = getCmdById(id);

@@ -10,11 +10,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
 import cn.sunnysky.dialogs.LoginMessageNotification;
-import cn.sunnysky.user.security.SecurityManager;
 import com.google.android.material.snackbar.Snackbar;
 
 import static cn.sunnysky.IntegratedManager.logger;
@@ -65,27 +63,29 @@ public class LoginActivity extends AppCompatActivity {
             
             rsp = internalNetworkHandler
                     .login(userName, encryptedPwd);
-            processBlock = false;
+
+            performLogin();
         }
     };
+
+    private void performLogin(){
+        if (rsp.startsWith("ERR") || rsp.length() != 32)
+            new LoginMessageNotification(false).show(getSupportFragmentManager(),"");
+        else{
+            Intent intent = new Intent();
+            intent.setClass(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+    }
 
     public void onClickLogin(View view) {
         if (internalNetworkHandler
             != null){
 
+            Snackbar.make(view, R.string.logining_in, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
             StudentClientApplication.join(login);
-
-            long timeStamp = SystemClock.currentThreadTimeMillis() + 1000;
-            while (processBlock || timeStamp > SystemClock.currentThreadTimeMillis())
-                logger.log("Waiting for response");
-
-            if (rsp.startsWith("ERR") || rsp.length() != 32)
-                new LoginMessageNotification(false).show(getSupportFragmentManager(),"");
-            else{
-                Intent intent = new Intent();
-                intent.setClass(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
         }
     }
 

@@ -1,8 +1,8 @@
 package client;
 
+import client.ftp.FTPHandler;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
-import cn.sunnysky.command.impl.CommandDemo;
 import cn.sunnysky.command.impl.CommandLogin;
 
 import java.io.*;
@@ -12,15 +12,23 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    private static final String host = "192.168.1.11";
-    private static final int port = 40000;
+    public static final String HOST = "192.168.1.11";
+    public static final int PORT = 40000;
+    public static final int FTP_PORT = 21;
     private Socket socket;
     private IntegratedManager manager;
+    private FTPHandler ftpHandler;
 
     public ClientBase() throws IOException {
         manager = new IntegratedManager(Side.CLIENT);
-        socket = new Socket(host,port);
+        ftpHandler = new FTPHandler();
+
+        socket = new Socket(HOST, PORT);
         logger.log("Client started");
+    }
+
+    public FTPHandler getClientFtpHandler() {
+        return ftpHandler;
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {

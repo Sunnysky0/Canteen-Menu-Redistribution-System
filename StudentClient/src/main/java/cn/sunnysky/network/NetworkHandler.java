@@ -68,4 +68,6 @@ public class NetworkHandler {
             e.printStackTrace();
         }
     }
+
+    public boolean transferRemoteFile(String fileName, String localPath){ return client.getClientFtpHandler().transferRemoteFile(fileName,localPath); }
 }

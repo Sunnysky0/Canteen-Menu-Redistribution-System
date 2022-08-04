@@ -9,9 +9,15 @@ import cn.sunnysky.model.DataModelManager;
 import cn.sunnysky.model.FoodType;
 import cn.sunnysky.model.SortedList;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import static cn.sunnysky.IntegratedManager.logger;
+
 public class StartTest {
     public static void main(String[] args) {
-        new StartTest().test1();
+        new StartTest().test2x();
     }
 
     public final void test1(){
@@ -44,6 +50,23 @@ public class StartTest {
 
     public final void test2(){
         new DTreeBuilder().buildFromFile("/assets/food_data_s1.fson").visualize(0);
+    }
+
+    public final void test2x(){
+        File output = null;
+        try {
+            // output = DataModelManager.copyResource("food_data_s1.fson",
+            //         "F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\PUBLIC_DATA\\");
+
+            output = DataModelManager.copyResourceDir("F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\PUBLIC_DATA\\");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        logger.log(output.getPath());
+
     }
 
     public final void test3(){

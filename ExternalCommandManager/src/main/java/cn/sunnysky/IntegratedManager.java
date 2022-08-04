@@ -2,7 +2,6 @@ package cn.sunnysky;
 
 import cn.sunnysky.api.IFileManager;
 import cn.sunnysky.api.ILogger;
-import cn.sunnysky.api.LogType;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.api.default_impl.DefaultLogger;
@@ -11,9 +10,6 @@ import cn.sunnysky.user.UserManager;
 
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import static cn.sunnysky.user.security.AnnotationChecker.checkSide;
 
 public class IntegratedManager {
     public static ILogger logger = new DefaultLogger();

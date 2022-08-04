@@ -1,5 +1,6 @@
 package cn.sunnysky.model;
 
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -44,6 +45,50 @@ public class DataModelManager<T> {
 
     public static URI getResourceURI(String name) throws URISyntaxException {
         return Objects.requireNonNull(DataModelManager.class.getResource(name)).toURI();
+    }
+
+    public static File copyResourceDir(String targetDir) throws URISyntaxException, IOException {
+        final URI path = DataModelManager.getResourceURI("/assets/idc.pt");
+
+        File fileDir = new File(path).getParentFile();
+
+        for (File f : Objects.requireNonNull(fileDir.listFiles()))
+            copyResource(f.getName(),targetDir);
+
+        return fileDir;
+
+    }
+
+    public static File copyResource(String name, String targetDir) throws URISyntaxException, IOException {
+        String finalURI;
+
+        if (!name.startsWith("/assets/"))
+            finalURI = "/assets/" + name;
+        else
+            finalURI = name;
+
+        final URI path = DataModelManager.getResourceURI(finalURI);
+
+        File file = new File(path);
+
+        File output = new File(targetDir,file.getName());
+
+        output.createNewFile();
+
+        FileInputStream inputStream = new FileInputStream(file);
+        FileOutputStream outputStream = new FileOutputStream(output,false);
+
+        byte[] bytes = new byte[inputStream.available()];
+
+        inputStream.read(bytes);
+        outputStream.write(bytes);
+
+        outputStream.flush();
+
+        outputStream.close();
+        inputStream.close();
+
+        return output;
     }
 
     public FoodType[] parsePath(String... path){

@@ -3,7 +3,7 @@ package cn.sunnysky.user;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.annotation.SideOnly;
-import cn.sunnysky.user.security.SecurityManager;
+import cn.sunnysky.security.SecurityManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

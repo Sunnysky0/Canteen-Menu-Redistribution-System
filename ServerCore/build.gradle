@@ -30,10 +30,10 @@ dependencies {
     implementation 'org.apache.mina:mina-core:2.1.6'
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'org.slf4j:slf4j-api:1.8.0-beta4'
 
     // https://mvnrepository.com/artifact/org.slf4j/jcl-over-slf4j
-    implementation 'org.slf4j:jcl-over-slf4j:1.7.36'
+    implementation 'org.slf4j:jcl-over-slf4j:1.8.0-beta4'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-context
     implementation 'org.springframework:spring-context:2.5.5'

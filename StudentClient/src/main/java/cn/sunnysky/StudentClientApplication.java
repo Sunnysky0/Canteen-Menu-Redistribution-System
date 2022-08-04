@@ -65,6 +65,7 @@ public class StudentClientApplication extends Application implements IFileManage
         IntegratedManager.setFileManager(this);
 
         executorService = Executors.newCachedThreadPool();
+
         try {
             initializeNetwork();
         } catch (NetworkErrorException e) {

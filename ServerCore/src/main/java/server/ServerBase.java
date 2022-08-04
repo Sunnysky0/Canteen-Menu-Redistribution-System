@@ -4,6 +4,7 @@ import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.user.UserManager;
+import server.ftp.FTPHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -23,6 +24,7 @@ public class ServerBase implements Runnable{
     private static boolean statusFlag = true;
     private Socket socketa;
     private IntegratedManager manager;
+
 
     public ServerBase(Socket socket){
         this.socketa = socket;
@@ -117,13 +119,16 @@ public class ServerBase implements Runnable{
         isAccepting = false;
     }
 
-    static ExecutorService executorService = Executors.newCachedThreadPool();
+    private static FTPHandler ftpHandler = new FTPHandler();
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
     public static void main(String[] args) {
 
 
         try {
             serverSocket = new ServerSocket(port);
             logger.log("Server started");
+
+            ftpHandler.startOrRestartFtpServerAt(new File(".\\PUBLIC_DATA").toURI());
 
             executorService.execute(ServerBase::processCmd);
 
@@ -146,6 +151,8 @@ public class ServerBase implements Runnable{
                 }
 
             }
+
+            ftpHandler.closeFtpServer();
 
             System.exit(0);
 
