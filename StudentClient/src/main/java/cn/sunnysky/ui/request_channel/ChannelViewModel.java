@@ -3,6 +3,7 @@ package cn.sunnysky.ui.request_channel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import cn.sunnysky.R;
 
 public class ChannelViewModel extends ViewModel {
 
@@ -10,10 +11,10 @@ public class ChannelViewModel extends ViewModel {
 
     public ChannelViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("Initial value");
     }
 
-    public LiveData<String> getText() {
+    public MutableLiveData<String> getText() {
         return mText;
     }
 }

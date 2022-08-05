@@ -69,5 +69,5 @@ public class NetworkHandler {
         }
     }
 
-    public boolean transferRemoteFile(String fileName, String localPath){ return client.getClientFtpHandler().transferRemoteFile(fileName,localPath); }
+    public boolean transferRemoteFile(String remoteFilePath, String localFilePath) throws IOException { return client.getClientFtpHandler().download(remoteFilePath,localFilePath); }
 }

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import cn.sunnysky.R;
 import cn.sunnysky.databinding.FragmentSlideshowBinding;
 
 public class ChannelFragment extends Fragment {
@@ -26,6 +27,8 @@ public class ChannelFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textSlideshow;
+        channelViewModel.getText().setValue(getString(R.string.menu_not_published));
+
         channelViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

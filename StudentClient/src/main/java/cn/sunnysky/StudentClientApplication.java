@@ -10,6 +10,7 @@ import client.ClientBase;
 import cn.sunnysky.api.IFileManager;
 import cn.sunnysky.api.ILogger;
 import cn.sunnysky.api.LogType;
+import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.database.SqliteMgr;
 import cn.sunnysky.network.NetworkHandler;
 import org.jetbrains.annotations.NotNull;
@@ -38,13 +39,13 @@ public class StudentClientApplication extends Application implements IFileManage
         public void log(String s, LogType type) {
             switch (type){
                 case ERROR:
-                    Log.e("ERR",s);
+                    Log.e("[StudentClient]",s);
                     break;
                 case INFORMATION:
-                    Log.i("INFORMATION",s);
+                    Log.i("[StudentClient]",s);
                     break;
                 case WARNING:
-                    Log.w("WARNING",s);
+                    Log.w("[StudentClient]",s);
                     break;
             }
         }
@@ -62,7 +63,7 @@ public class StudentClientApplication extends Application implements IFileManage
         IntegratedManager.setLogger(logger);
 
         initialize();
-        IntegratedManager.setFileManager(this);
+        IntegratedManager.setFileManager(new DefaultFileManager(getFilesDir().getPath() + "/DATA_OF_CLIENT"));
 
         executorService = Executors.newCachedThreadPool();
 

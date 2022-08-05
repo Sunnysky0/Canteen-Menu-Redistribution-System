@@ -26,9 +26,10 @@
     <string name="cannot_connect">无法连接至服务器</string>
     <string name="connection_established">已连接至服务器</string>
     <string name="file_transferred">文件传输成功</string>
-    <string name="ftp_failure">FTP服务器连接错误，请重试</string>
+    <string name="ftp_failure">FTP文件传输错误，请重试</string>
     <string name="file_transferring">文件传输中</string>
     <string name="logining_in">登录中</string>
+    <string name="menu_not_published">菜单暂未发布</string>
 
 
 </resources>

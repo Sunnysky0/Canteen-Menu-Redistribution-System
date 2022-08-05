@@ -78,8 +78,13 @@ public class MainActivity extends AppCompatActivity {
                             .setAction("Action", null).show();
 
                     r = () -> {
-                        final boolean b = StudentClientApplication.internalNetworkHandler.transferRemoteFile(
-                                "food_data_s1.fson", getFilesDir().getPath() + "/download");
+                        boolean b = false;
+                        try {
+                            b = StudentClientApplication.internalNetworkHandler.transferRemoteFile(
+                                    ".//food_data_s1.fson", getFilesDir().getPath() + "/download/" + "food_data_s1.fson");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         if (b)
                             Snackbar.make(view, R.string.file_transferred, Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
