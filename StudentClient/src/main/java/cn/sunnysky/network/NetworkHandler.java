@@ -18,7 +18,7 @@ public class NetworkHandler {
 
     public NetworkHandler() throws NetworkErrorException {
         if (!initialize()){
-            IntegratedManager.logger.log("Unable to start connect server!",LogType.ERROR);
+            IntegratedManager.logger.log("Unable to connect server!",LogType.ERROR);
             throw new NetworkErrorException();
         }
     }

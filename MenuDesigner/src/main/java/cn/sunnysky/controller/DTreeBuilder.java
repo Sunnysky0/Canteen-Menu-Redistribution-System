@@ -15,14 +15,14 @@ public class DTreeBuilder {
         String[] temp = str.split(";");
 
         String target = "";
-        ArrayList<String> path = new ArrayList<>();
+        String[] path = {};
 
         for( String s : temp){
             if(s.startsWith("target")) target = s.split(":")[1];
-            else if(s.startsWith("path")) Collections.addAll(path,s.split(":")[1].split(","));
+            else if(s.startsWith("path")) path = s.split(":")[1].split(",");
         }
 
-        map.put(target,path.toArray(new String[0]));
+        map.put(target,path);
 
     }
 

@@ -30,6 +30,11 @@
     <string name="file_transferring">文件传输中</string>
     <string name="logining_in">登录中</string>
     <string name="menu_not_published">菜单暂未发布</string>
+    <string name="name">名称</string>
+    <string name="category">类别</string>
+    <string name="option">操作</string>
+    <string name="file_sys">文件系统</string>
+    <string name="synchornizing">数据同步中</string>
 
 
 </resources>

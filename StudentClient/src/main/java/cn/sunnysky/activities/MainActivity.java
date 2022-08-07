@@ -3,12 +3,11 @@ package cn.sunnysky.activities;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.view.Menu;
-import client.ClientBase;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
+import cn.sunnysky.dialogs.OperationProgressNotification;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -19,10 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import cn.sunnysky.databinding.ActivityMainBinding;
 
-import java.io.File;
 import java.io.IOException;
-
-import static cn.sunnysky.IntegratedManager.logger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,19 +36,6 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File path = new File(getFilesDir().getPath() + "/download");
-
-                if ( ! path.exists())
-                    path.mkdirs();
-
-                File file = new File(getFilesDir().getPath() + "/download/falcon.exe");
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                logger.log(path.toURI().getPath());
 
                 final boolean[] flag = {true};
 
@@ -77,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(view, R.string.file_transferring, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
+                    OperationProgressNotification notification = new OperationProgressNotification(getContext(),R.string.synchornizing);
+                    // notification.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    notification.show();
+
                     r = () -> {
                         boolean b = false;
                         try {
@@ -85,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        notification.dismiss();
+
                         if (b)
                             Snackbar.make(view, R.string.file_transferred, Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
@@ -109,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    private Context getContext() {
+        return this;
     }
 
     @Override

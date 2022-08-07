@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:orientation="vertical"
+                xmlns:tools="http://schemas.android.com/tools"
+                tools:context="cn.sunnysky.dialogs.OperationProgressNotification"
+                android:layout_centerInParent="true"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- <a> Loading Animation xml</a> -->
+
+    <TextView
+            android:layout_height="10dp"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text=""
+    />
+
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/msg"
+            android:text="@string/file_transferring"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+    />
+
+    <com.example.loadinganimation.LoadingAnimation
+            android:id="@+id/loadingAnim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barType="@drawable/rainbow_ring"
+            app:boldText="false"
+            app:enlarge="7"
+            app:textColor="@color/purple_500"
+            app:textSize="15sp" />
+
+
+</LinearLayout>
