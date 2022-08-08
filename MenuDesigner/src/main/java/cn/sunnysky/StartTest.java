@@ -58,7 +58,7 @@ public class StartTest {
             // output = DataModelManager.copyResource("food_data_s1.fson",
             //         "F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\PUBLIC_DATA\\");
 
-            output = DataModelManager.copyResourceDir("F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\PUBLIC_DATA\\");
+            output = DataModelManager.copyResourceDir(".\\PUBLIC_DATA\\");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (IOException e) {

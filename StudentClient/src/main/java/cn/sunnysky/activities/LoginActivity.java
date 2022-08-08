@@ -2,7 +2,6 @@ package cn.sunnysky.activities;
 
 import android.accounts.NetworkErrorException;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -13,9 +12,13 @@ import android.os.Bundle;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
 import cn.sunnysky.dialogs.LoginMessageNotification;
+import cn.sunnysky.dialogs.OperationProgressAnimator;
 import com.google.android.material.snackbar.Snackbar;
 
-import static cn.sunnysky.IntegratedManager.logger;
+import java.util.HashMap;
+import java.util.Map;
+
+import static cn.sunnysky.StudentClientApplication.DATABASE_INSTANCE;
 import static cn.sunnysky.StudentClientApplication.internalNetworkHandler;
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
 
     private CheckBox cb;
+    private CheckBox rm;
 
     private boolean visible;
 
@@ -40,6 +44,14 @@ public class LoginActivity extends AppCompatActivity {
 
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         cb = (CheckBox)findViewById(R.id.cb);
+        rm = findViewById(R.id.rm);
+
+        Map<String,String> userMap = DATABASE_INSTANCE.readSerializedDataFromFile("lastLoginData");
+
+        if (userMap != null && !userMap.keySet().isEmpty()){
+            this.username.setText((CharSequence) userMap.keySet().toArray()[0]);
+            this.password.setText((CharSequence) userMap.values().toArray()[0]);
+        }
 
         if (internalNetworkHandler == null) {
             try {
@@ -59,19 +71,41 @@ public class LoginActivity extends AppCompatActivity {
         public void run() {
             final String userName = username.getText().toString();
             final String original = password.getText().toString();
-            final String encryptedPwd = original;
-            
+
             rsp = internalNetworkHandler
-                    .login(userName, encryptedPwd);
+                    .login(userName, original);
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             performLogin();
         }
     };
 
+    private OperationProgressAnimator notification;
     private void performLogin(){
+
+        notification.dismiss();
+
         if (rsp.startsWith("ERR") || rsp.length() != 32)
             new LoginMessageNotification(false).show(getSupportFragmentManager(),"");
         else{
+
+            if (rm.isChecked()){
+                final String userName = username.getText().toString();
+                final String original = password.getText().toString();
+
+                Map<String,String> userMap = new HashMap<>();
+
+                userMap.put(userName,original);
+
+                DATABASE_INSTANCE.createNewFileInstance("lastLoginData");
+                DATABASE_INSTANCE.writeSerializedData(userMap,"lastLoginData");
+            }
+
             Intent intent = new Intent();
             intent.setClass(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -82,9 +116,9 @@ public class LoginActivity extends AppCompatActivity {
         if (internalNetworkHandler
             != null){
 
-            Snackbar.make(view, R.string.logining_in, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            notification = new OperationProgressAnimator(this,R.string.logining_in);
 
+            notification.show();
             StudentClientApplication.join(login);
         }
     }

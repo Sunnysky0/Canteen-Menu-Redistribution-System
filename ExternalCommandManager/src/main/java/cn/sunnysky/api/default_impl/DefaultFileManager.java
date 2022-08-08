@@ -60,14 +60,15 @@ public class DefaultFileManager implements IFileManager {
 
     @Override
     public void createNewFileInstance(String fileName) {
-        if(fileIndex.contains(fileName)){
-            IntegratedManager.logger.log("File already exists!");
-            return;
-        }
+
         String fullName = PREFIX + fileName + SUFFIX;
 
         File newFile = new File(fullName);
         try {
+
+            if (newFile.exists())
+                newFile.delete();
+
             newFile.createNewFile();
             IntegratedManager.logger.log(newFile.getAbsolutePath());
 

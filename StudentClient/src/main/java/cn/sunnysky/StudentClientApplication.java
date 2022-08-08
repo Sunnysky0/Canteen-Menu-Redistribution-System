@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import client.ClientBase;
 import cn.sunnysky.api.IFileManager;
 import cn.sunnysky.api.ILogger;
 import cn.sunnysky.api.LogType;
@@ -16,7 +15,6 @@ import cn.sunnysky.network.NetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +23,10 @@ import java.util.concurrent.Executors;
 public class StudentClientApplication extends Application implements IFileManager {
 
     public static NetworkHandler internalNetworkHandler;
+
+    public static StudentClientApplication DATABASE_INSTANCE;
+
+    public static boolean isSync = false;
 
     private static ExecutorService executorService;
 
@@ -72,6 +74,8 @@ public class StudentClientApplication extends Application implements IFileManage
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         }
+
+        DATABASE_INSTANCE = this;
     }
 
     public static void initializeNetwork() throws NetworkErrorException {
@@ -107,11 +111,11 @@ public class StudentClientApplication extends Application implements IFileManage
     @Override
     public void createNewFileInstance(String fileName) {
         if (sqliteMgr.tabIsExist(fileName)){
-            IntegratedManager.logger.log("Table already exists");
-            return;
+            IntegratedManager.logger.log("Table already exists, removing the old one");
+            Database.execSQL("DROP TABLE " + fileName);
         }
 
-        Database.execSQL("create table " + fileName + "(_key primary key TEXT,value TEXT)");
+        Database.execSQL("create table " + fileName + "(_key TEXT primary key, value TEXT)");
         IntegratedManager.logger.log("Table created");
     }
 
@@ -122,7 +126,8 @@ public class StudentClientApplication extends Application implements IFileManage
         if (Database.isOpen())
             for (K key : data.keySet())
                 Database.execSQL("INSERT OR REPLACE into " + targetFile + " (_key,value) "
-                        + "values(" + key.toString() + "," + data.get(key).toString() + ")");
+                        + "values(" + "\"" +key.toString() + "\"" + "," +
+                         "\"" + data.get(key).toString() + "\"" + ")");
     }
 
     @Override

@@ -5,12 +5,16 @@ import client.ClientBase;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.StudentClientApplication;
 import cn.sunnysky.api.LogType;
+import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.command.impl.CommandDisconnect;
 import cn.sunnysky.command.impl.CommandLogin;
+import cn.sunnysky.security.SecurityManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 
 public class NetworkHandler {
 
@@ -67,6 +71,33 @@ public class NetworkHandler {
             IntegratedManager.logger.log("Network error", LogType.ERROR);
             e.printStackTrace();
         }
+    }
+
+    public boolean synchronize(String downloadPath) throws IOException, URISyntaxException {
+        File indicator = new File(downloadPath,"idc.pom");
+        if (! indicator.exists() )
+            transferRemoteFile(".//idc.pom",downloadPath + "/idc.pom");
+
+        final Map<String,String> data =
+                ((DefaultFileManager) IntegratedManager.fileManager).readSerializedDataFromFile(indicator.toURI(), null);
+
+        boolean flag = false;
+
+        if (data == null)
+            return false;
+
+        for (String k : data.keySet()){
+            File f = new File(downloadPath,k);
+
+            if ( !f.exists() )
+                flag = transferRemoteFile(".//" + k,downloadPath + "/" + k);
+            else if ( !SecurityManager.md5HashCode(new FileInputStream(f)).contentEquals(data.get(k)) ){
+                f.delete();
+                flag = transferRemoteFile(".//" + k,downloadPath + "/" + k);
+            }
+        }
+
+        return flag;
     }
 
     public boolean transferRemoteFile(String remoteFilePath, String localFilePath) throws IOException { return client.getClientFtpHandler().download(remoteFilePath,localFilePath); }

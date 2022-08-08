@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="260dp"
+                android:layout_height="260dp"
                 android:orientation="vertical"
                 xmlns:tools="http://schemas.android.com/tools"
-                tools:context="cn.sunnysky.dialogs.OperationProgressNotification"
+                tools:context="cn.sunnysky.dialogs.OperationProgressAnimator"
                 android:layout_centerInParent="true"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -31,7 +31,7 @@
             android:id="@+id/loadingAnim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:barType="@drawable/rainbow_ring"
+            app:barType="@drawable/gear_duo"
             app:boldText="false"
             app:enlarge="7"
             app:textColor="@color/purple_500"

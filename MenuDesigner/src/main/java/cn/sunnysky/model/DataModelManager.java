@@ -1,11 +1,13 @@
 package cn.sunnysky.model;
 
+import cn.sunnysky.IntegratedManager;
+import cn.sunnysky.api.default_impl.DefaultFileManager;
+import cn.sunnysky.security.SecurityManager;
+
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 
 public class DataModelManager<T> {
     private DTree<T> root;
@@ -48,9 +50,24 @@ public class DataModelManager<T> {
     }
 
     public static File copyResourceDir(String targetDir) throws URISyntaxException, IOException {
-        final URI path = DataModelManager.getResourceURI("/assets/idc.pt");
+        final URI path = DataModelManager.getResourceURI("/assets/idc.pom");
 
-        File fileDir = new File(path).getParentFile();
+        final File file = new File(path);
+        if (file.exists()){
+            file.delete();
+            file.createNewFile();
+        }
+
+        File fileDir = file.getParentFile();
+        final HashMap<String,String> map = new HashMap<>();
+        for (File f : Objects.requireNonNull(fileDir.listFiles()))
+            if (! f.getName().contentEquals("idc.pom"))
+                map.put(f.getName(),
+                                SecurityManager.md5HashCode(
+                                        new FileInputStream(
+                                                file)));
+
+        new DefaultFileManager().writeSerializedData(map,path);
 
         for (File f : Objects.requireNonNull(fileDir.listFiles()))
             copyResource(f.getName(),targetDir);

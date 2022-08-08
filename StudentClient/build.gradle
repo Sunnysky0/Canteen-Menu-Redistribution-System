@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.github.Marvel999:Android-Loading-Animation:1.0.0'
 
     implementation project(':ClientCore')
-    implementation project(path: ':ExternalCommandManager')
+    implementation project(':ExternalCommandManager')
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

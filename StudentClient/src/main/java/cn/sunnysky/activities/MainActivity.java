@@ -1,5 +1,6 @@
 package cn.sunnysky.activities;
 
+
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +8,7 @@ import android.view.View;
 import android.view.Menu;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
-import cn.sunnysky.dialogs.OperationProgressNotification;
+import cn.sunnysky.dialogs.OperationProgressAnimator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -19,11 +20,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import cn.sunnysky.databinding.ActivityMainBinding;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+
+    public void hideFab(){
+        this.binding.appBarMain.fab.hide();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +63,18 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(view, R.string.connection_established, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
-                    Snackbar.make(view, R.string.file_transferring, Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, R.string.synchornizing, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 
-                    OperationProgressNotification notification = new OperationProgressNotification(getContext(),R.string.synchornizing);
+                    OperationProgressAnimator notification = new OperationProgressAnimator(getContext(),R.string.synchornizing);
                     // notification.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     notification.show();
 
                     r = () -> {
                         boolean b = false;
                         try {
-                            b = StudentClientApplication.internalNetworkHandler.transferRemoteFile(
-                                    ".//food_data_s1.fson", getFilesDir().getPath() + "/download/" + "food_data_s1.fson");
-                        } catch (IOException e) {
+                            b = StudentClientApplication.internalNetworkHandler.synchronize(getFilesDir().getPath() + "/download/");
+                        } catch (IOException | URISyntaxException e) {
                             e.printStackTrace();
                         }
 
@@ -82,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         notification.dismiss();
 
                         if (b)
-                            Snackbar.make(view, R.string.file_transferred, Snackbar.LENGTH_LONG)
+                            Snackbar.make(view, R.string.synchornized, Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         else Snackbar.make(view, R.string.ftp_failure, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();

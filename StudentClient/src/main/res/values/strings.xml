@@ -35,6 +35,8 @@
     <string name="option">操作</string>
     <string name="file_sys">文件系统</string>
     <string name="synchornizing">数据同步中</string>
+    <string name="synchornized">同步成功</string>
+    <string name="upload_btn">上传已选菜单</string>
 
 
 </resources>
