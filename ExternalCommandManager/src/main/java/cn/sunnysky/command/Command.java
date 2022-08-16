@@ -5,6 +5,7 @@ import cn.sunnysky.api.annotation.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
+import java.lang.annotation.Inherited;
 
 
 public abstract class Command {

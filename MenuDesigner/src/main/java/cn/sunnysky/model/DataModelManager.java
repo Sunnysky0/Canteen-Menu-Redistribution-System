@@ -65,7 +65,7 @@ public class DataModelManager<T> {
                 map.put(f.getName(),
                                 SecurityManager.md5HashCode(
                                         new FileInputStream(
-                                                file)));
+                                                f)));
 
         new DefaultFileManager().writeSerializedData(map,path);
 

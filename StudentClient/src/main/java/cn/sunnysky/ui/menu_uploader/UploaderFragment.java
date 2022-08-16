@@ -21,17 +21,24 @@ import cn.sunnysky.activities.MainActivity;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.databinding.FragmentGalleryBinding;
 import cn.sunnysky.dialogs.OperationProgressAnimator;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 
 public class UploaderFragment extends Fragment {
 
     private UploaderViewModel uploaderViewModel;
+    private Map<CheckBox,TextView> mapping;
+    private @Nullable Map<String, String> loadedMapping;
     private FragmentGalleryBinding binding;
     private TableLayout tableLayout;
     private View bindingRoot;
@@ -46,7 +53,12 @@ public class UploaderFragment extends Fragment {
 
         ((MainActivity) getActivity()).hideFab();
 
+        mapping = new HashMap<>();
+        loadedMapping = StudentClientApplication.DATABASE_INSTANCE.readSerializedDataFromFile("chosenMenu");
+
         tableLayout = binding.TABLE;
+
+        binding.UPLOADBTN.setOnClickListener(this::onClickUpload);
 
         synchronize();
 
@@ -87,7 +99,19 @@ public class UploaderFragment extends Fragment {
             tableRow.addView(t);
         }
 
-        tableRow.addView(new CheckBox(getContext()));
+        final CheckBox checkBox = new CheckBox(getContext());
+        tableRow.addView(checkBox);
+
+        String s;
+
+        if (loadedMapping != null && !loadedMapping.keySet().isEmpty())
+            if ((s = loadedMapping.get(k)) != null)
+                if (Boolean.parseBoolean(s))
+                    checkBox.setChecked(true);
+
+        if (mapping != null)
+            mapping.put(checkBox,name);
+
 
         this.tableLayout.addView(tableRow);
     }
@@ -154,9 +178,72 @@ public class UploaderFragment extends Fragment {
         StudentClientApplication.join(networkThread);
     }
 
+    private void performUpload() {
+        String[] strs = new String[mapping.size()];
+
+        AtomicInteger i = new AtomicInteger(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mapping.forEach((checkBox, textView) -> {
+                if (checkBox.isChecked())
+                    strs[i.getAndIncrement()] = (String) textView.getText();
+            });
+        }
+
+        int f = 0;
+        for (String str : strs)
+            if (str != null && !str.contentEquals(""))
+                f++;
+
+        String[] menu = new String[f];
+        System.arraycopy(strs, 0, menu, 0, f);
+
+        final String rsp = StudentClientApplication.internalNetworkHandler.uploadMenu(menu);
+
+        try {
+            Thread.sleep(800);
+        } catch (InterruptedException e) {
+            if (animator != null && animator.isShowing())
+                animator.dismiss();
+            e.printStackTrace();
+        }
+
+        if (animator != null && animator.isShowing())
+            animator.dismiss();
+
+        Snackbar.make(onClickView, R.string.upload_success, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+    }
+
+    private OperationProgressAnimator animator;
+    private View onClickView;
+    public void onClickUpload(View view){
+        onClickView = view;
+        animator = new OperationProgressAnimator(
+                Objects.requireNonNull(getContext()),R.string.uploading);
+
+        animator.show();
+
+        StudentClientApplication.join(this::performUpload);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        Map<String,Boolean> finalMapping = new HashMap<>();
+
+        StudentClientApplication.DATABASE_INSTANCE.createNewFileInstance("chosenMenu");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mapping.forEach((checkBox, textView) -> {
+                if (checkBox.isChecked())
+                    finalMapping.put((String) textView.getText(),true);
+            });
+        }
+
+        StudentClientApplication.DATABASE_INSTANCE.writeSerializedData(finalMapping,"chosenMenu");
+
         binding = null;
     }
 }

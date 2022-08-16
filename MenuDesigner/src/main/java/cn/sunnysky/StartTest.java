@@ -43,9 +43,12 @@ public class StartTest {
 
         root.visualize(0);
 
-        final DTree<FoodType> result = dTreeController.calculateResult();
-        System.out.print("Final result: ");
-        System.out.println(result.getData());
+        DTree<FoodType>[] result = dTreeController.calculateResults(3,0,1);
+        System.out.println("All results: ");
+
+        for (DTree<FoodType> t : result)
+            System.out.println(t.getData());
+
     }
 
     public final void test2(){

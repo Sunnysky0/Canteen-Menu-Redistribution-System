@@ -3,7 +3,9 @@ package cn.sunnysky.activities;
 
 import android.accounts.NetworkErrorException;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import cn.sunnysky.R;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
                 StudentClientApplication.join(r);
 
-                if(!flag[0] || StudentClientApplication.internalNetworkHandler == null)
+                if(!flag[0] || !StudentClientApplication.isNetworkPrepared())
                     Snackbar.make(view, R.string.cannot_connect, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 else{
@@ -128,5 +130,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void onClickLogout(MenuItem item) {
+        StudentClientApplication.join(
+                () -> StudentClientApplication.internalNetworkHandler.disconnect());
+
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }

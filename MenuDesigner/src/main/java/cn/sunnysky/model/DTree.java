@@ -46,6 +46,21 @@ public class DTree<T> {
         return temp;
     }
 
+    public void dispatch() throws RuntimeException {
+        if (this.children != null && !this.children.isEmpty())
+            throw new RuntimeException(" Cannot dispatch current node due to non-empty children list");
+        if (this.parent != null && this.parent.children != null)
+            this.parent.children.remove(this);
+
+    }
+
+    public void dispatchLayer(){
+        if (this.children != null && !this.children.isEmpty())
+            throw new RuntimeException(" Cannot dispatch current layer due to non-empty children list");
+        if (this.parent != null && this.parent.children != null)
+            this.parent.children.clear();
+    }
+
     /**
      * Print the entire tree recursively.
      * @param layer The white space you want to assign.

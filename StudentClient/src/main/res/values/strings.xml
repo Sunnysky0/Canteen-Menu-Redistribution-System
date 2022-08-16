@@ -37,6 +37,12 @@
     <string name="synchornizing">数据同步中</string>
     <string name="synchornized">同步成功</string>
     <string name="upload_btn">上传已选菜单</string>
+    <string name="uploading">上传中</string>
+    <string name="upload_success">上传成功！</string>
+    <string name="pwc_label">确认密码</string>
+    <string name="registering">注册中</string>
+    <string name="pwd_check_failure">密码输入不一致</string>
+    <string name="logout">登出</string>
 
 
 </resources>

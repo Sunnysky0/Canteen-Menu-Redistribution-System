@@ -12,7 +12,7 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    public static final String HOST = "192.168.1.12";
+    public static final String HOST = "192.168.1.14";
     public static final int PORT = 40000;
     public static final int FTP_PORT = 21;
     private Socket socket;

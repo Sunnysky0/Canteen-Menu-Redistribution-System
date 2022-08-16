@@ -4,6 +4,7 @@ import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.user.UserManager;
+import server.interaction.MenuCalculator;
 import server.ftp.FTPHandler;
 
 import java.io.*;
@@ -15,7 +16,8 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static cn.sunnysky.IntegratedManager.logger;
+import static cn.sunnysky.IntegratedManager.*;
+
 public class ServerBase implements Runnable{
     private static final int port = 40000;
     /**
@@ -94,11 +96,14 @@ public class ServerBase implements Runnable{
                 }
 
                 break;
+            } else if (msg.equalsIgnoreCase("calculate")){
+                MenuCalculator.loadAndCalculate("user_index",".//PUBLIC_DATA//food_data_s1.fson");
             }
 
         }
 
     }
+
 
     static Socket socket;
     static ServerSocket serverSocket;
@@ -125,6 +130,9 @@ public class ServerBase implements Runnable{
 
 
         try {
+
+            setFileManager(new DefaultFileManager("DATA_OF_SERVER"));
+
             serverSocket = new ServerSocket(port);
             logger.log("Server started");
 

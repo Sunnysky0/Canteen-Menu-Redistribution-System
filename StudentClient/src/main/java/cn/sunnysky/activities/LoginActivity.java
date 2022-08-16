@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
 import cn.sunnysky.dialogs.LoginMessageNotification;
@@ -53,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             this.password.setText((CharSequence) userMap.values().toArray()[0]);
         }
 
-        if (internalNetworkHandler == null) {
+        if (!StudentClientApplication.isNetworkPrepared()) {
             try {
                 StudentClientApplication.initializeNetwork();
             } catch (NetworkErrorException e) {
@@ -64,6 +65,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickRG(View view) {
+        Intent intent = new Intent();
+        intent.setClass(LoginActivity.this,RegisterActivity.class);
+        startActivity(intent);
     }
 
     private Runnable login = new Runnable() {
@@ -91,8 +95,11 @@ public class LoginActivity extends AppCompatActivity {
         notification.dismiss();
 
         if (rsp.startsWith("ERR") || rsp.length() != 32)
-            new LoginMessageNotification(false).show(getSupportFragmentManager(),"");
+            Snackbar.make(onClickView, rsp, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         else{
+
+            IntegratedManager.temporaryUserActivationCode = rsp;
 
             if (rm.isChecked()){
                 final String userName = username.getText().toString();
@@ -112,9 +119,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
+    private View onClickView;
     public void onClickLogin(View view) {
         if (internalNetworkHandler
             != null){
+
+            onClickView = view;
 
             notification = new OperationProgressAnimator(this,R.string.logining_in);
 

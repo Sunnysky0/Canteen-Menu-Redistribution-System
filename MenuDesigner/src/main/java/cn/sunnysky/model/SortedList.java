@@ -76,10 +76,13 @@ public class SortedList<T> implements Collection<T> {
     @Override
     public boolean retainAll(@NotNull Collection<?> c) { throw new UnsupportedOperationException(); }
 
-    @Deprecated
-    @SuppressWarnings("Operation not supported")
+
+
     @Override
-    public void clear() { throw new UnsupportedOperationException(); }
+    public void clear() {
+        for (T t : this)
+            remove(t);
+    }
 
     public void add(LinkableNode<T> node){ add(node,dummyHead);}
 
@@ -178,7 +181,7 @@ public class SortedList<T> implements Collection<T> {
 
     @Override
     public boolean isEmpty() {
-        return dummyHead.hasNext();
+        return SIZE == 0;
     }
 
     @Override

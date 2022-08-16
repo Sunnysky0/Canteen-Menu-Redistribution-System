@@ -8,26 +8,30 @@ import cn.sunnysky.api.LogType;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.command.impl.CommandDisconnect;
 import cn.sunnysky.command.impl.CommandLogin;
+import cn.sunnysky.command.impl.CommandRegister;
+import cn.sunnysky.command.impl.CommandUpload;
 import cn.sunnysky.security.SecurityManager;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Map;
 
 public class NetworkHandler {
 
     private ClientBase client;
 
+    public ClientBase getClient() {
+        return client;
+    }
+
     public NetworkHandler() throws NetworkErrorException {
-        if (!initialize()){
+        if (!connect()){
             IntegratedManager.logger.log("Unable to connect server!",LogType.ERROR);
             throw new NetworkErrorException();
         }
     }
 
-    private boolean initialize(){
+    private boolean connect(){
         final Boolean[] flag = {null};
 
         StudentClientApplication.join(
@@ -51,10 +55,34 @@ public class NetworkHandler {
         return flag[0];
     }
 
-    public String login(String userName,String encryptedPwd){
+    public String login(String userName,String pwd){
         assert client != null;
         try {
-            return client.sendCmd(CommandLogin.LOGIN_ID,userName,encryptedPwd);
+            return client.sendCmd(CommandLogin.LOGIN_ID,userName,pwd);
+        } catch (IOException e) {
+            IntegratedManager.logger.log("Network error", LogType.ERROR);
+            e.printStackTrace();
+
+            return "ERR: Network failure";
+        }
+    }
+
+    public String register(String userName, String pwd){
+        assert client != null;
+        try {
+            return client.sendCmd(CommandRegister.REGISTER_ID,userName,pwd);
+        } catch (IOException e) {
+            IntegratedManager.logger.log("Network error", LogType.ERROR);
+            e.printStackTrace();
+
+            return "ERR: Network failure";
+        }
+    }
+
+    public String uploadMenu(String... menu){
+        assert client != null;
+        try {
+            return client.sendCmd(CommandUpload.UPLOAD_ID,menu);
         } catch (IOException e) {
             IntegratedManager.logger.log("Network error", LogType.ERROR);
             e.printStackTrace();

@@ -4,6 +4,8 @@ import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.model.DTree;
 import cn.sunnysky.model.DataModelManager;
 import cn.sunnysky.model.FoodType;
+
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +35,7 @@ public class DTreeBuilder {
 
         try {
             Map<String,String[]> data = fileManager.readSerializedDataFromFile(
-                    DataModelManager.getResourceURI(fileURI),
+                    new File(fileURI).toURI(),
                     this::consume);
             for (String target : data.keySet())
                 mgr.addTreeNode(target,data.get(target));

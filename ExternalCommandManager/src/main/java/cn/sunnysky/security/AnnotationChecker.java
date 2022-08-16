@@ -36,7 +36,7 @@ public class AnnotationChecker {
                     ( temporaryUserActivationCode != null
                             &&
                     permission.value().ordinal()
-                    >=
+                    <=
                     IntegratedManager.getUserManager().getUserPermission(
                             temporaryUserActivationCode
                     ).ordinal()

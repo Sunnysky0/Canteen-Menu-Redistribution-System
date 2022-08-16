@@ -26,8 +26,6 @@ public class StudentClientApplication extends Application implements IFileManage
 
     public static StudentClientApplication DATABASE_INSTANCE;
 
-    public static boolean isSync = false;
-
     private static ExecutorService executorService;
 
     private static SQLiteDatabase Database;
@@ -58,6 +56,10 @@ public class StudentClientApplication extends Application implements IFileManage
         }
     };
 
+    public static boolean isNetworkPrepared(){
+        return internalNetworkHandler != null && internalNetworkHandler.getClient() != null;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -79,8 +81,7 @@ public class StudentClientApplication extends Application implements IFileManage
     }
 
     public static void initializeNetwork() throws NetworkErrorException {
-        if (internalNetworkHandler == null)
-            internalNetworkHandler = new NetworkHandler();
+        internalNetworkHandler = new NetworkHandler();
     }
 
     public static void join(@NotNull Runnable r){ executorService.execute(r);}

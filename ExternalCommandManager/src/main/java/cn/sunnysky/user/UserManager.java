@@ -30,13 +30,16 @@ public class UserManager {
         return defaultUser;
     }
 
+    public ArrayList<User> getRegisteredUsers() {
+        return registeredUsers;
+    }
+
     @SuppressWarnings("NewApi")
     private void initialize(){
-        IntegratedManager.fileManager.createNewFileInstance(INDEX);
         Map<String,String> map = IntegratedManager.fileManager.readSerializedDataFromFile(INDEX);
 
-        assert map != null;
-        map.values().forEach(this::loadUser);
+        if (map != null)
+            map.values().forEach(this::loadUser);
     }
 
     private void loadUser(String targetCfgFile){
@@ -106,6 +109,8 @@ public class UserManager {
             activeUser.deactivate();
         }
     }
+
+    public User getUserByTUAC(String temporaryUserActivationCode){ return activeUsers.get(temporaryUserActivationCode); }
 
     public UserPermission getUserPermission(String temporaryUserActivationCode){ return activeUsers.get(temporaryUserActivationCode).permission;}
 

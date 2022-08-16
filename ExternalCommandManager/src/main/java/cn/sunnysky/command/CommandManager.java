@@ -1,10 +1,7 @@
 package cn.sunnysky.command;
 
 import cn.sunnysky.api.annotation.Side;
-import cn.sunnysky.command.impl.CommandDemo;
-import cn.sunnysky.command.impl.CommandDisconnect;
-import cn.sunnysky.command.impl.CommandLogin;
-import cn.sunnysky.command.impl.CommandRegister;
+import cn.sunnysky.command.impl.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.PrintWriter;
@@ -31,6 +28,7 @@ public class CommandManager {
         Commands.add( new CommandLogin());
         Commands.add( new CommandRegister());
         Commands.add( new CommandDisconnect());
+        Commands.add( new CommandUpload());
     }
 
     public void registerCmd(Command cmd){ Commands.add(cmd); }
