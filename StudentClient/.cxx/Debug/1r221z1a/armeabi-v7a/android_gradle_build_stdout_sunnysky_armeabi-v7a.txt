@@ -1,0 +1,3 @@
+ninja: Entering directory `F:\Repos\Cantenn Menu Redistribution System\Canteen-Menu-Redistribution-System\StudentClient\.cxx\Debug\1r221z1a\armeabi-v7a'
+[1/2] Building CXX object CMakeFiles/sunnysky.dir/sunnysky.cpp.o
+[2/2] Linking CXX shared library "F:\Repos\Cantenn Menu Redistribution System\Canteen-Menu-Redistribution-System\StudentClient\build\intermediates\cxx\Debug\1r221z1a\obj\armeabi-v7a\libsunnysky.so"

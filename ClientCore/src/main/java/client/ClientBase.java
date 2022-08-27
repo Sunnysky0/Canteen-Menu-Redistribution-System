@@ -12,7 +12,7 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    public static final String HOST = "192.168.1.14";
+    public static final String HOST = "192.168.1.13";
     public static final int PORT = 40000;
     public static final int FTP_PORT = 21;
     private Socket socket;
@@ -67,7 +67,7 @@ public class ClientBase {
                     logger.log("Client Shutdown");
                     break;
                 } else if (Integer.parseInt(temp[0]) == CommandLogin.LOGIN_ID)
-                    IntegratedManager.temporaryUserActivationCode = rsp;
+                    IntegratedManager.setTemporaryUserActivationCode(rsp);
                 logger.log(rsp);
             }
         } catch (IOException e) {

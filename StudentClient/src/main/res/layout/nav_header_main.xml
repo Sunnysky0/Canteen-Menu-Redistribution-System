@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            app:srcCompat="?android:attr/fingerprintAuthDrawable"
+            app:srcCompat="@mipmap/food"
             android:minHeight="64dp"
             android:minWidth="64dp"
             android:contentDescription="@string/nav_header_desc"

@@ -1,0 +1,40 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\StudentClient\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "D:\\Programs\\Android\\SDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe",
+      "-C",
+      "F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\StudentClient\\.cxx\\Debug\\1r221z1a\\x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "D:\\Programs\\Android\\SDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe",
+    "-C",
+    "F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\StudentClient\\.cxx\\Debug\\1r221z1a\\x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "sunnysky-Debug-x86_64": {
+      "buildCommandComponents": [
+        "D:\\Programs\\Android\\SDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe",
+        "-C",
+        "F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\StudentClient\\.cxx\\Debug\\1r221z1a\\x86_64",
+        "sunnysky"
+      ],
+      "buildType": "debug",
+      "abi": "x86_64",
+      "artifactName": "sunnysky",
+      "output": "F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\StudentClient\\build\\intermediates\\cxx\\Debug\\1r221z1a\\obj\\x86_64\\libsunnysky.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

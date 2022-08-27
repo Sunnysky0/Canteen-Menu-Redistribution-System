@@ -21,8 +21,8 @@ public class CommandDisconnect extends Command {
     @SideOnly(value = Side.CLIENT)
     public void onSend(@NotNull PrintWriter writer, String... args) {
         String s = "CMD:" + DISCONNECT_ID;
-        if (IntegratedManager.temporaryUserActivationCode != null)
-            s += ";ARGS:" + IntegratedManager.temporaryUserActivationCode;
+        if (IntegratedManager.getTemporaryUserActivationCode() != null)
+            s += ";ARGS:" + IntegratedManager.getTemporaryUserActivationCode();
         writer.println(s);
     }
 

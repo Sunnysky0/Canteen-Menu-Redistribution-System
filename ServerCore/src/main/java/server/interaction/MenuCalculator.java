@@ -1,5 +1,6 @@
 package server.interaction;
 
+import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.LogType;
 import cn.sunnysky.controller.DTreeBuilder;
 import cn.sunnysky.controller.DTreeController;
@@ -55,9 +56,14 @@ public class MenuCalculator {
             DTree<FoodType>[] result = controller.calculateResults(3,0,1);
             logger.log("All results: ");
 
-            for (DTree<FoodType> f : result)
-                logger.log(f.getData().toString());
+            Map<String,String> dataMap = new HashMap<>();
 
+            for (DTree<FoodType> f : result)
+                dataMap.put(f.getData().name, "recommended");
+
+            fileManager.writeSerializedData(dataMap,"RecommendedMenu");
+
+            recommendedMenu = dataMap.keySet();
         }
 
     }

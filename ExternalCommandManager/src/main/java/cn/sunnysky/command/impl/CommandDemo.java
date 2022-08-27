@@ -23,8 +23,8 @@ public class CommandDemo extends Command {
     @SideOnly(value = Side.CLIENT)
     public void onSend(@NotNull PrintWriter writer,String... args) {
         String s = "CMD:" + DEMO_ID + ";" + "ARGS:NULL";
-        if (IntegratedManager.temporaryUserActivationCode != null)
-            s += ";AUTH:" + IntegratedManager.temporaryUserActivationCode;
+        if (IntegratedManager.getTemporaryUserActivationCode() != null)
+            s += ";AUTH:" + IntegratedManager.getTemporaryUserActivationCode();
         writer.println(s);
     }
 

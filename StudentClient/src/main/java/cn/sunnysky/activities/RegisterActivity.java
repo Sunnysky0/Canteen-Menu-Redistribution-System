@@ -54,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onClickShow(View view) {
 
-        if(view.getId() == R.id.cb)
+        if(view.getId() == R.id.rcb)
             if(cb.isChecked())
                 password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             else
@@ -100,10 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        Intent intent = new Intent();
-        intent.setClass(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
-
+        onClickReturn(null);
     }
 
     public void onClickRegister(View view) {

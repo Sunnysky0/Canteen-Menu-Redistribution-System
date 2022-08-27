@@ -17,7 +17,6 @@ public class SortedList<T> implements Collection<T> {
 
     private LinkableNode<T> dummyHead = new LinkableNode<>(null);
 
-
     private int SIZE = 0;
 
     private Comparator<T> comparator;
@@ -80,8 +79,19 @@ public class SortedList<T> implements Collection<T> {
 
     @Override
     public void clear() {
-        for (T t : this)
-            remove(t);
+        LinkableNode<T> currentNode = dummyHead.next;
+
+        while (true){
+            currentNode.setPrevious(null);
+
+            if (currentNode.hasNext())
+                currentNode = currentNode.next;
+            else
+                break;
+        }
+
+        this.dummyHead.next = null;
+        SIZE = 0;
     }
 
     public void add(LinkableNode<T> node){ add(node,dummyHead);}
@@ -185,9 +195,9 @@ public class SortedList<T> implements Collection<T> {
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(Object o ) {
         for (T t : this)
-            if ( t == o)
+            if ( t == o || comparator.compare(t, (T) o) == 0)
                 return true;
         return false;
     }

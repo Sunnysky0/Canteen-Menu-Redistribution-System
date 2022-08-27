@@ -69,7 +69,7 @@ public class DTreeController {
     /**
      * Calculate the results of a DTree
      * @param limit The size of the result array
-     * @param indicator The indicator array, consists of 0 and 1. 0 for node dispatch while 1 for layer dispatch
+     * @param indicator The indicator array, consists of 0 and 1, 0 for node dispatch while 1 for layer dispatch
      * @return The result array
      */
     public DTree<FoodType>[] calculateResults(int limit,int... indicator){

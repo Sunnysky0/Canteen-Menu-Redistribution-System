@@ -17,7 +17,7 @@ import static cn.sunnysky.IntegratedManager.logger;
 
 public class StartTest {
     public static void main(String[] args) {
-        new StartTest().test2x();
+        new StartTest().test1();
     }
 
     public final void test1(){

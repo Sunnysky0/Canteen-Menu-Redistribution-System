@@ -24,7 +24,9 @@ public class StudentClientApplication extends Application implements IFileManage
 
     public static NetworkHandler internalNetworkHandler;
 
-    public static StudentClientApplication DATABASE_INSTANCE;
+    public static IFileManager DATABASE_INSTANCE;
+
+    public static Context ctx;
 
     private static ExecutorService executorService;
 
@@ -66,6 +68,8 @@ public class StudentClientApplication extends Application implements IFileManage
 
         IntegratedManager.setLogger(logger);
 
+        ctx = getApplicationContext();
+
         initialize();
         IntegratedManager.setFileManager(new DefaultFileManager(getFilesDir().getPath() + "/DATA_OF_CLIENT"));
 
@@ -81,7 +85,7 @@ public class StudentClientApplication extends Application implements IFileManage
     }
 
     public static void initializeNetwork() throws NetworkErrorException {
-        internalNetworkHandler = new NetworkHandler();
+        internalNetworkHandler = new NetworkHandler(ctx);
     }
 
     public static void join(@NotNull Runnable r){ executorService.execute(r);}

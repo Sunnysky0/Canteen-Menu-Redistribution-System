@@ -12,7 +12,6 @@ import android.os.Bundle;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
-import cn.sunnysky.dialogs.LoginMessageNotification;
 import cn.sunnysky.dialogs.OperationProgressAnimator;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -99,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
         else{
 
-            IntegratedManager.temporaryUserActivationCode = rsp;
+            IntegratedManager.setTemporaryUserActivationCode(rsp);
 
             if (rm.isChecked()){
                 final String userName = username.getText().toString();

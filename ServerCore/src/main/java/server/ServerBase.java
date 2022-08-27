@@ -3,6 +3,7 @@ package server;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
+import cn.sunnysky.command.CommandManager;
 import cn.sunnysky.user.UserManager;
 import server.interaction.MenuCalculator;
 import server.ftp.FTPHandler;
@@ -17,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static cn.sunnysky.IntegratedManager.*;
+import static cn.sunnysky.command.CommandManager.*;
 
 public class ServerBase implements Runnable{
     private static final int port = 40000;
@@ -24,17 +26,20 @@ public class ServerBase implements Runnable{
      * True when running
      */
     private static boolean statusFlag = true;
-    private Socket socketa;
-    private IntegratedManager manager;
+    private Socket socketInServer;
+    private static final IntegratedManager manager;
+
+    static {
+        setFileManager(new DefaultFileManager("DATA_OF_SERVER"));
+        manager =
+                new IntegratedManager(
+                        Side.SERVER,
+                        new UserManager());
+    }
 
 
     public ServerBase(Socket socket){
-        this.socketa = socket;
-        IntegratedManager.setFileManager(new DefaultFileManager("DATA_OF_SERVER"));
-        manager = new IntegratedManager(
-                Side.SERVER,
-                new UserManager());
-
+        this.socketInServer = socket;
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {
@@ -56,9 +61,9 @@ public class ServerBase implements Runnable{
         while(!flag)
         {
             try {
-                assert socketa != null;
-                PrintWriter writer = this.getWriter(socketa);
-                BufferedReader reader = this.getReader(socketa);
+                assert socketInServer != null;
+                PrintWriter writer = this.getWriter(socketInServer);
+                BufferedReader reader = this.getReader(socketInServer);
                 String msg = null;
                 while ((msg = reader.readLine())!=null)
                     manager.resolveCmd(msg, writer);
@@ -69,8 +74,8 @@ public class ServerBase implements Runnable{
                 e.printStackTrace();
             } finally {
                 try {
-                    if(socketa!=null)
-                        socketa.close();
+                    if(socketInServer !=null)
+                        socketInServer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -98,7 +103,8 @@ public class ServerBase implements Runnable{
                 break;
             } else if (msg.equalsIgnoreCase("calculate")){
                 MenuCalculator.loadAndCalculate("user_index",".//PUBLIC_DATA//food_data_s1.fson");
-            }
+            } else if (msg.equalsIgnoreCase("commands"))
+                logger.log(getCommands().toString());
 
         }
 
@@ -130,8 +136,6 @@ public class ServerBase implements Runnable{
 
 
         try {
-
-            setFileManager(new DefaultFileManager("DATA_OF_SERVER"));
 
             serverSocket = new ServerSocket(port);
             logger.log("Server started");

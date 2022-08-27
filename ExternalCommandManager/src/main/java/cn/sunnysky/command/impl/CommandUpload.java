@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static cn.sunnysky.IntegratedManager.logger;
-
 public class CommandUpload extends Command {
     public static final int UPLOAD_ID = 1003;
 
@@ -30,12 +28,12 @@ public class CommandUpload extends Command {
     public void onSend(@NotNull PrintWriter writer, String... args) {
         StringBuilder s = new StringBuilder("CMD:" + UPLOAD_ID + ";" + "ARGS:");
 
-        s.append(Objects.requireNonNullElse(IntegratedManager.temporaryUserActivationCode, "dummy"));
+        s.append(Objects.requireNonNullElse(IntegratedManager.getTemporaryUserActivationCode(), "dummy"));
 
         for (String arg : args) s.append(",").append(arg);
 
-        if (IntegratedManager.temporaryUserActivationCode != null)
-            s.append(";AUTH:").append(IntegratedManager.temporaryUserActivationCode);
+        if (IntegratedManager.getTemporaryUserActivationCode() != null)
+            s.append(";AUTH:").append(IntegratedManager.getTemporaryUserActivationCode());
 
         writer.println(s);
     }

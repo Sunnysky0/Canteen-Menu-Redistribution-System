@@ -1,16 +1,16 @@
 package cn.sunnysky.network;
 
 import android.accounts.NetworkErrorException;
+import android.content.Context;
 import client.ClientBase;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.StudentClientApplication;
 import cn.sunnysky.api.LogType;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
-import cn.sunnysky.command.impl.CommandDisconnect;
-import cn.sunnysky.command.impl.CommandLogin;
-import cn.sunnysky.command.impl.CommandRegister;
-import cn.sunnysky.command.impl.CommandUpload;
+import cn.sunnysky.command.CommandManager;
+import cn.sunnysky.command.impl.*;
 import cn.sunnysky.security.SecurityManager;
+import cn.sunnysky.util.AndroidClassUtil;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -19,12 +19,14 @@ import java.util.Map;
 public class NetworkHandler {
 
     private ClientBase client;
+    private Context ctx;
 
     public ClientBase getClient() {
         return client;
     }
 
-    public NetworkHandler() throws NetworkErrorException {
+    public NetworkHandler(Context ctx) throws NetworkErrorException {
+        this.ctx = ctx;
         if (!connect()){
             IntegratedManager.logger.log("Unable to connect server!",LogType.ERROR);
             throw new NetworkErrorException();
@@ -33,6 +35,8 @@ public class NetworkHandler {
 
     private boolean connect(){
         final Boolean[] flag = {null};
+
+        CommandManager.setClassUtil(new AndroidClassUtil(ctx));
 
         StudentClientApplication.join(
                 () -> {
@@ -83,6 +87,18 @@ public class NetworkHandler {
         assert client != null;
         try {
             return client.sendCmd(CommandUpload.UPLOAD_ID,menu);
+        } catch (IOException e) {
+            IntegratedManager.logger.log("Network error", LogType.ERROR);
+            e.printStackTrace();
+
+            return "ERR: Network failure";
+        }
+    }
+
+    public String getRecommendedMenu(){
+        assert client != null;
+        try {
+            return client.sendCmd(CommandGetMenu.MENU_ID);
         } catch (IOException e) {
             IntegratedManager.logger.log("Network error", LogType.ERROR);
             e.printStackTrace();

@@ -10,14 +10,16 @@ import cn.sunnysky.user.UserManager;
 
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 public class IntegratedManager {
     public static ILogger logger = new DefaultLogger();
     public static IFileManager fileManager;
     public static Side currentSide = Side.UNKNOWN;
-    public static String temporaryUserActivationCode = null;
-    private final CommandManager commandManager;
+    public static Set<String> recommendedMenu;
+    public final CommandManager commandManager;
     private static UserManager userManager;
+    private static String temporaryUserActivationCode = null;
 
 
     @SuppressWarnings("Client-side constructor")
@@ -45,6 +47,14 @@ public class IntegratedManager {
         IntegratedManager.fileManager = fileManager;
     }
 
+    public static String getTemporaryUserActivationCode() {
+        return temporaryUserActivationCode;
+    }
+
+    public static void setTemporaryUserActivationCode(String temporaryUserActivationCode) {
+        IntegratedManager.temporaryUserActivationCode = temporaryUserActivationCode;
+    }
+
     public void sendCmd(int id, PrintWriter writer, String... args){
         try {
             commandManager.sendCmd(id,writer,args);
@@ -70,6 +80,6 @@ public class IntegratedManager {
 
 
 
-    public static final UserManager getUserManager(){ return userManager; }
+    public static UserManager getUserManager(){ return userManager; }
 
 }

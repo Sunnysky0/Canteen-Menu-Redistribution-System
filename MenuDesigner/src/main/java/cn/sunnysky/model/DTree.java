@@ -54,7 +54,7 @@ public class DTree<T> {
 
     }
 
-    public void dispatchLayer(){
+    public void dispatchLayer() throws RuntimeException {
         if (this.children != null && !this.children.isEmpty())
             throw new RuntimeException(" Cannot dispatch current layer due to non-empty children list");
         if (this.parent != null && this.parent.children != null)
