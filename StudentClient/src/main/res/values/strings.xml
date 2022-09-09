@@ -8,7 +8,7 @@
     <string name="action_settings">设置</string>
 
     <string name="menu_home">主页</string>
-    <string name="menu_uploader">菜单上传</string>
+    <string name="menu_uploader">菜单投票</string>
     <string name="menu_information_bar">申请通道</string>
 
     <string name="username_label">用户名：</string>
@@ -46,6 +46,9 @@
     <string name="date">日期</string>
     <string name="menu">菜单</string>
     <string name="food">菜名</string>
+    <string name="count_down">距离投票截止还有</string>
+    <string name="upload_req">上传申请数据</string>
+    <string name="menu_published">已发布的菜单</string>
 
 
 </resources>

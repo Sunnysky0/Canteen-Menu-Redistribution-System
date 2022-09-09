@@ -127,8 +127,7 @@ public class DefaultFileManager implements IFileManager {
     }
 
     @Override
-    @Nullable
-    public Map readSerializedDataFromFile(String fileName) {
+    public @Nullable Map<String, String> readSerializedDataFromFile(String fileName) {
         try {
             return
                     this.readSerializedDataFromFile(

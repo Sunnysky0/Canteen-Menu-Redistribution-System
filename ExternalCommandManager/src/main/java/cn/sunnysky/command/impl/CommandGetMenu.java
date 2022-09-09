@@ -13,6 +13,9 @@ public class CommandGetMenu extends Command {
 
     @Override
     public String onReceive(String... args) {
+        if (IntegratedManager.recommendedMenu == null || IntegratedManager.recommendedMenu.isEmpty())
+            return "ERR: Menu not published";
+
         StringBuilder builder = new StringBuilder();
         for (String s : IntegratedManager.recommendedMenu)
             builder.append(s).append(",");

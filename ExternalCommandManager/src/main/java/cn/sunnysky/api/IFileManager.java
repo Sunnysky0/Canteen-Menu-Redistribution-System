@@ -13,5 +13,5 @@ public interface IFileManager {
     void createNewFileInstance(String fileName);
     <K,V> void writeSerializedData(Map<K,V> data,String targetFile);
     @Nullable
-    Map readSerializedDataFromFile(String fileName);
+    Map<String, String> readSerializedDataFromFile(String fileName);
 }

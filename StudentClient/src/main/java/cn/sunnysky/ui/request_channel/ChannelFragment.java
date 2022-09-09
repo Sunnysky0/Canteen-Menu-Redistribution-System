@@ -19,10 +19,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
+import cn.sunnysky.activities.MainActivity;
 import cn.sunnysky.api.LogType;
 import cn.sunnysky.databinding.FragmentSlideshowBinding;
+import cn.sunnysky.dialogs.CommonNotification;
 import cn.sunnysky.dialogs.OperationProgressAnimator;
 import cn.sunnysky.util.DateUtil;
+import com.google.android.material.snackbar.Snackbar;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -46,6 +49,8 @@ public class ChannelFragment extends Fragment {
         channelViewModel =
                 new ViewModelProvider(this).get(ChannelViewModel.class);
 
+        ((MainActivity) getActivity()).hideFab();
+
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
 
         mapping = new HashMap<>();
@@ -54,6 +59,8 @@ public class ChannelFragment extends Fragment {
         View root = binding.getRoot();
 
         tableLayout = binding.TABLE;
+
+        binding.sendReq.setOnClickListener(this::onClickRequest);
 
         loadPublishedData();
 
@@ -66,9 +73,12 @@ public class ChannelFragment extends Fragment {
 
         if ( rsp.startsWith("ERR")){
             logger.log("Network failure", LogType.ERROR);
+            logger.log(rsp,LogType.ERROR);
 
-            final DialogFragment dialogFragment = new DialogFragment();
-            dialogFragment.show(getParentFragmentManager(),getString(R.string.menu_not_published));
+            animator.dismiss();
+
+            final DialogFragment dialogFragment = new CommonNotification(getString(R.string.menu_not_published));
+            dialogFragment.show(getParentFragmentManager(),"");
         }
         else {
             recommendedMenu.clear();
@@ -142,6 +152,26 @@ public class ChannelFragment extends Fragment {
         if (animator != null)
             animator.show();
         StudentClientApplication.join(this::syncMenu);
+    }
+
+    private void onClickRequest(View view){
+        String [] req = new String[mapping.size()];
+        final Iterator<TextView> iterator = mapping.values().iterator();
+        for (String s : req)
+            s = (String) iterator.next().getText();
+
+        StudentClientApplication.join(
+                () ->{
+                    final String s = StudentClientApplication.internalNetworkHandler.sendReq(req);
+
+                    if (s.startsWith("ERR"))
+                        Snackbar.make(view,R.string.network_failure,Snackbar.LENGTH_LONG).show();
+                    else
+                        Snackbar.make(view,R.string.upload_success,Snackbar.LENGTH_LONG).show();
+
+                }
+        );
+
     }
 
 

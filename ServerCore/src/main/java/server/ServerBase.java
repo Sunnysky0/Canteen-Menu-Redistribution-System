@@ -86,7 +86,7 @@ public class ServerBase implements Runnable{
     private static void processCmd(){
         String msg;
         Scanner in = new Scanner(System.in);
-        while(!(msg = in.nextLine()).equals(" "))
+        while(in.hasNextLine() && !(msg = in.nextLine()).equals(" "))
         {
             if (msg.equalsIgnoreCase("stop")){
                 logger.log("Server shutdown");
@@ -105,6 +105,10 @@ public class ServerBase implements Runnable{
                 MenuCalculator.loadAndCalculate("user_index",".//PUBLIC_DATA//food_data_s1.fson");
             } else if (msg.equalsIgnoreCase("commands"))
                 logger.log(getCommands().toString());
+            else if (msg.equalsIgnoreCase("menu"))
+                logger.log(recommendedMenu.toString());
+            else
+                logger.log("Command " + msg + " not found");
 
         }
 

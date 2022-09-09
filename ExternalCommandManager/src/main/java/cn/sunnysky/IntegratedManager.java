@@ -10,13 +10,14 @@ import cn.sunnysky.user.UserManager;
 
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.Set;
 
 public class IntegratedManager {
     public static ILogger logger = new DefaultLogger();
     public static IFileManager fileManager;
     public static Side currentSide = Side.UNKNOWN;
-    public static Set<String> recommendedMenu;
+    public static Set<String> recommendedMenu = new HashSet<>();
     public final CommandManager commandManager;
     private static UserManager userManager;
     private static String temporaryUserActivationCode = null;

@@ -1,12 +1,21 @@
 plugins {
     id 'java'
+    id 'application'
+
 }
 
 group 'cn.sunnysky'
 version '1.0-SNAPSHOT'
+mainClassName = "server.ServerBase"
 
 repositories {
     mavenCentral()
+}
+
+tasks {
+    run {
+        standardInput = System.'in'
+    }
 }
 
 dependencies {

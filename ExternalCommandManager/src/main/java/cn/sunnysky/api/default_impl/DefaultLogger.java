@@ -13,6 +13,6 @@ public class DefaultLogger implements ILogger {
     @Override
     public String getFormattedLog(String s, LogType type) {
         String time = getFormattedTime();
-        return "[" + time + "]" + "[DefaultLogger][" + type.toString() + "]" + s;
+        return "[" + time + "]" + "[" + type.toString() + "]" + s;
     }
 }

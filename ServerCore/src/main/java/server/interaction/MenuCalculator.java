@@ -54,12 +54,14 @@ public class MenuCalculator {
                 controller.addChoice(k);
 
             DTree<FoodType>[] result = controller.calculateResults(3,0,1);
-            logger.log("All results: ");
+            logger.log("Publishing data");
 
             Map<String,String> dataMap = new HashMap<>();
 
             for (DTree<FoodType> f : result)
                 dataMap.put(f.getData().name, "recommended");
+
+            fileManager.createNewFileInstance("RecommendedMenu");
 
             fileManager.writeSerializedData(dataMap,"RecommendedMenu");
 

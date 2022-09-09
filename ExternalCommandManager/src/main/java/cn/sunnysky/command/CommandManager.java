@@ -49,14 +49,14 @@ public class CommandManager {
             throws InstantiationException, IllegalAccessException {
         List<Class<?>> clz = null;
         try {
-            clz = classUtil.getClassesForPackage(packageName);
+            clz = Collections.unmodifiableList(classUtil.getClassesForPackage(packageName));
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
             logger.log("Exception while loading commands");
             throw new InstantiationException();
         }
 
-        for (Class c : clz){
+        for (Class<?> c : clz){
             if (c.getSuperclass() == Command.class)
                 register((Command) c.newInstance());
         }

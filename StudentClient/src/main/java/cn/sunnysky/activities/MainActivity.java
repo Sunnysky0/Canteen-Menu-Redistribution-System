@@ -30,7 +30,19 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     public void hideFab(){
+        if (this.binding != null
+                && this.binding.appBarMain != null
+                && this.binding.appBarMain.fab != null
+                && this.binding.appBarMain.fab.isShown())
         this.binding.appBarMain.fab.hide();
+    }
+
+    public void showFab(){
+        if (this.binding != null
+                && this.binding.appBarMain != null
+                && this.binding.appBarMain.fab != null
+                && !this.binding.appBarMain.fab.isShown())
+            this.binding.appBarMain.fab.show();
     }
 
     @Override

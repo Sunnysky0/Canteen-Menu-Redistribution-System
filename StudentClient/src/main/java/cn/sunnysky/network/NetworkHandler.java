@@ -107,6 +107,18 @@ public class NetworkHandler {
         }
     }
 
+    public String sendReq(String... req){
+        assert client != null;
+        try {
+            return client.sendCmd(CommandRequest.REQ_ID,req);
+        } catch (IOException e) {
+            IntegratedManager.logger.log("Network error", LogType.ERROR);
+            e.printStackTrace();
+
+            return "ERR: Network failure";
+        }
+    }
+
     public void disconnect(){
         try {
             client.sendCmd(CommandDisconnect.DISCONNECT_ID);
