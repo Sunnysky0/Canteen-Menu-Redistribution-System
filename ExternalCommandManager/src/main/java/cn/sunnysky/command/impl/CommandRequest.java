@@ -8,6 +8,8 @@ import cn.sunnysky.user.UserManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +37,7 @@ public class CommandRequest extends Command {
         writer.println(s);
     }
 
+    @SuppressWarnings("NewApi")
     @Override
     @SideOnly(value = Side.SERVER)
     public String onReceive(String... args) {
@@ -53,9 +56,10 @@ public class CommandRequest extends Command {
 
         final UserManager.User user = IntegratedManager.getUserManager().getUserByTUAC(args[0]);
 
-        IntegratedManager.fileManager.createNewFileInstance(user.userName + "-R");
+        final String fileName = user.userName + "-Request-" + Date.from(Instant.ofEpochSecond(System.currentTimeMillis()));
+        IntegratedManager.fileManager.createNewFileInstance(fileName);
 
-        IntegratedManager.fileManager.writeSerializedData(mapping,user.userName + "-R");
+        IntegratedManager.fileManager.writeSerializedData(mapping,fileName);
 
         return "Request has been received";
     }

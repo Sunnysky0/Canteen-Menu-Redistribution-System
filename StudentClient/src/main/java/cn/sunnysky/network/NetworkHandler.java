@@ -52,9 +52,13 @@ public class NetworkHandler {
                 }
         );
 
+        long limit = System.currentTimeMillis() + 3000;
 
-        while(flag[0] == null)
+        while(flag[0] == null && System.currentTimeMillis() < limit)
             IntegratedManager.logger.log("Connecting to server");
+
+        if (flag[0] == null)
+            flag[0] = false;
 
         return flag[0];
     }
@@ -119,6 +123,18 @@ public class NetworkHandler {
         }
     }
 
+    public String sendRating(String... rating){
+        assert client != null;
+        try {
+            return client.sendCmd(CommandNewRating.RATING_ID,rating);
+        } catch (IOException e) {
+            IntegratedManager.logger.log("Network error", LogType.ERROR);
+            e.printStackTrace();
+
+            return "ERR: Network failure";
+        }
+    }
+
     public void disconnect(){
         try {
             client.sendCmd(CommandDisconnect.DISCONNECT_ID);
@@ -130,6 +146,10 @@ public class NetworkHandler {
     }
 
     public boolean synchronize(String downloadPath) throws IOException, URISyntaxException {
+        File dir = new File(downloadPath);
+        if (!dir.exists())
+            dir.mkdirs();
+
         File indicator = new File(downloadPath,"idc.pom");
         if (! indicator.exists() )
             transferRemoteFile(".//idc.pom",downloadPath + "/idc.pom");

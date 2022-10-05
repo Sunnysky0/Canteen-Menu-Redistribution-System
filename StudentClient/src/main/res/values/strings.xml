@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StudentClient</string>
+    <string name="app_name">CMRS-学生端</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Sunnysky Software</string>
@@ -46,9 +46,16 @@
     <string name="date">日期</string>
     <string name="menu">菜单</string>
     <string name="food">菜名</string>
-    <string name="count_down">距离投票截止还有</string>
+    <string name="count_down">距离投票截止菜单发布还有</string>
     <string name="upload_req">上传申请数据</string>
     <string name="menu_published">已发布的菜单</string>
+    <string name="feedback_channel">菜单评分</string>
+    <string name="menu_history">历史菜单</string>
+    <string name="send_feedback">上传评分</string>
+    <string name="menu_selectable">可选菜单</string>
+    <string name="send_menu">上传选择</string>
+    <string name="send_rep">上传请求</string>
+    <string name="server_failure">无法连接至服务器，请重试</string>
 
 
 </resources>

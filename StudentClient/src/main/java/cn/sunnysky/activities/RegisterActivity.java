@@ -42,14 +42,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         this.animator = new OperationProgressAnimator(this,R.string.registering);
 
-        if (!StudentClientApplication.isNetworkPrepared()) {
-            try {
-                StudentClientApplication.initializeNetwork();
-            } catch (NetworkErrorException e) {
-                Snackbar.make(this.getCurrentFocus(), R.string.network_failure, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }
     }
 
     public void onClickShow(View view) {
@@ -111,6 +103,17 @@ public class RegisterActivity extends AppCompatActivity {
             Snackbar.make(onClickView, R.string.pwd_check_failure, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             return;
+        }
+
+        if (!StudentClientApplication.isNetworkPrepared()) {
+            StudentClientApplication.join(() -> {
+                try {
+                    StudentClientApplication.initializeNetwork();
+                } catch (NetworkErrorException e) {
+                    Snackbar.make(view, R.string.server_failure, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
         }
 
         animator.show();

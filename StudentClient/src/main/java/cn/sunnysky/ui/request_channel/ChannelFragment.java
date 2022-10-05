@@ -157,8 +157,9 @@ public class ChannelFragment extends Fragment {
     private void onClickRequest(View view){
         String [] req = new String[mapping.size()];
         final Iterator<TextView> iterator = mapping.values().iterator();
-        for (String s : req)
-            s = (String) iterator.next().getText();
+        for (int i = 0; i < req.length; i++)
+            req[i] = (String) iterator.next().getText();
+
 
         StudentClientApplication.join(
                 () ->{

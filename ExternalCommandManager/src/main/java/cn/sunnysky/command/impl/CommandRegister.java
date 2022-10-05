@@ -27,7 +27,7 @@ public class CommandRegister extends Command {
     @Override
     @SideOnly(value = Side.SERVER)
     public String onReceive(String... args) {
-        if(IntegratedManager.getUserManager().createNewUser(args[0], UserPermission.OP,args[1]))
+        if(IntegratedManager.getUserManager().createNewUser(args[0], UserPermission.STUDENT,args[1]))
             return "Successfully registered!";
         return "ERR: Some problems have occurred";
     }

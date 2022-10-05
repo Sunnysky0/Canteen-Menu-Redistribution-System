@@ -1,0 +1,7 @@
+Executable : D:\Programs\Android\SDK\cmake\3.10.2.4988404\bin\ninja.exe
+arguments : 
+-C
+F:\Repos\Cantenn Menu Redistribution System\Canteen-Menu-Redistribution-System\StudentClient\.cxx\RelWithDebInfo\5q4p4w1y\x86_64
+sunnysky
+jvmArgs : 
+

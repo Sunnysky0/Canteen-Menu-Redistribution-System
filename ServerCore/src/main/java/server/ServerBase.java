@@ -1,6 +1,7 @@
 package server;
 
 import cn.sunnysky.IntegratedManager;
+import cn.sunnysky.api.IServer;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.command.CommandManager;
@@ -20,7 +21,7 @@ import java.util.concurrent.Executors;
 import static cn.sunnysky.IntegratedManager.*;
 import static cn.sunnysky.command.CommandManager.*;
 
-public class ServerBase implements Runnable{
+public class ServerBase implements Runnable, IServer {
     private static final int port = 40000;
     /**
      * True when running
@@ -40,6 +41,7 @@ public class ServerBase implements Runnable{
 
     public ServerBase(Socket socket){
         this.socketInServer = socket;
+        IntegratedManager.setServer(this);
     }
 
     public PrintWriter getWriter(Socket socket) throws IOException {
@@ -175,5 +177,33 @@ public class ServerBase implements Runnable{
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onCommonCommand(String msg) {
+        if (msg.equalsIgnoreCase("stop")){
+            logger.log("Server shutdown");
+            statusFlag = false;
+
+            executorService.shutdown();
+
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (msg.equalsIgnoreCase("calculate")){
+            MenuCalculator.loadAndCalculate("user_index",".//PUBLIC_DATA//food_data_s1.fson");
+        } else if (msg.equalsIgnoreCase("commands"))
+            logger.log(getCommands().toString());
+        else if (msg.equalsIgnoreCase("menu"))
+            logger.log(recommendedMenu.toString());
+        else
+            logger.log("Command " + msg + " not found");
+    }
+
+    @Override
+    public void onCalculate() {
+        MenuCalculator.loadAndCalculate("user_index",".//PUBLIC_DATA//food_data_s1.fson");
     }
 }

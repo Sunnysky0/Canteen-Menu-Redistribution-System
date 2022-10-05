@@ -10,14 +10,15 @@ import static cn.sunnysky.IntegratedManager.logger;
 
 public class FTPHandler {
     private FTPClient ftpClient;
+    private FTPManager manager;
 
     public FTPHandler() throws IOException {
         ftpLogin();
+
     }
 
     private void ftpLogin() throws IOException {
         int reply;
-        // FTP连接
 
         ftpClient = new FTPClient();
         ftpClient.setConnectTimeout(3000);
@@ -63,6 +64,42 @@ public class FTPHandler {
      * @return 上传的状态
      * @throws IOException
      */
+
+    public boolean dwl(String remote, String local) throws IOException {
+        FTPCfg config = new FTPCfg();
+        manager = new FTPManager(config);
+        manager.connectLogin();
+        manager.setListener(new IRetrieveListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onTrack(long nowOffset) {
+
+            }
+
+            @Override
+            public void onError(Object obj, int type) {
+                logger.log(obj.toString());
+            }
+
+            @Override
+            public void onCancel(Object obj) {
+                logger.log(obj.toString());
+            }
+
+            @Override
+            public void onDone() {
+
+            }
+        });
+        manager.download(remote,local);
+
+        return true;
+    }
+
     public boolean download(String remote, String local) throws IOException {
         if (!ftpClient.isConnected())
             ftpLogin();
@@ -73,6 +110,7 @@ public class FTPHandler {
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         ftpClient.setControlEncoding("GBK");
         boolean result;
+
 
         // 检查远程文件是否存在
         FTPFile[] files = ftpClient.listFiles(new String(remote.getBytes("GBK"), "iso-8859-1"));

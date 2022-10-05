@@ -52,15 +52,6 @@ public class LoginActivity extends AppCompatActivity {
             this.username.setText((CharSequence) userMap.keySet().toArray()[0]);
             this.password.setText((CharSequence) userMap.values().toArray()[0]);
         }
-
-        if (!StudentClientApplication.isNetworkPrepared()) {
-            try {
-                StudentClientApplication.initializeNetwork();
-            } catch (NetworkErrorException e) {
-                Snackbar.make(this.getCurrentFocus(), R.string.network_failure, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }
     }
 
     public void onClickRG(View view) {
@@ -121,6 +112,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private View onClickView;
     public void onClickLogin(View view) {
+        if (!StudentClientApplication.isNetworkPrepared()) {
+            StudentClientApplication.join(() -> {
+                try {
+                    StudentClientApplication.initializeNetwork();
+                } catch (NetworkErrorException e) {
+                    Snackbar.make(view, R.string.server_failure, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+        }
         if (internalNetworkHandler
             != null){
 

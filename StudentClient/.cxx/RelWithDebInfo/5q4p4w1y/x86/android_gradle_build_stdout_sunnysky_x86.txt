@@ -1,0 +1,2 @@
+ninja: Entering directory `F:\Repos\Cantenn Menu Redistribution System\Canteen-Menu-Redistribution-System\StudentClient\.cxx\RelWithDebInfo\5q4p4w1y\x86'
+ninja: no work to do.

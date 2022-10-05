@@ -87,7 +87,8 @@ public class UploaderFragment extends Fragment {
         buf[0] = name;
 
         TextView category = new TextView(getContext());
-        category.setText(v);
+        final String[] strings = v.split(",");
+        category.setText(strings[strings.length - 1]);
         buf[1] = category;
 
 

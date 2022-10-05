@@ -22,4 +22,10 @@
             android:name="cn.sunnysky.ui.request_channel.ChannelFragment"
             android:label="@string/menu_information_bar"
             tools:layout="@layout/fragment_slideshow"/>
+
+    <fragment
+            android:id="@+id/nav_feedback"
+            android:name="cn.sunnysky.ui.feedback_channel.FeedbackChannel"
+            android:label="@string/feedback_channel"
+            tools:layout="@layout/feedback_channel_fragment"/>
 </navigation>

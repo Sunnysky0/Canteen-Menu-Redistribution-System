@@ -2,6 +2,7 @@ package cn.sunnysky;
 
 import cn.sunnysky.api.IFileManager;
 import cn.sunnysky.api.ILogger;
+import cn.sunnysky.api.IServer;
 import cn.sunnysky.api.annotation.Side;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.api.default_impl.DefaultLogger;
@@ -18,6 +19,7 @@ public class IntegratedManager {
     public static IFileManager fileManager;
     public static Side currentSide = Side.UNKNOWN;
     public static Set<String> recommendedMenu = new HashSet<>();
+    public static IServer server;
     public final CommandManager commandManager;
     private static UserManager userManager;
     private static String temporaryUserActivationCode = null;
@@ -38,6 +40,10 @@ public class IntegratedManager {
         if( fileManager == null )
             fileManager = new DefaultFileManager("DATA_OF_" + this.currentSide.toString());
         this.userManager = userManager;
+    }
+
+    public static void setServer(IServer server) {
+        IntegratedManager.server = server;
     }
 
     public static void setLogger(ILogger logger) {

@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.menu_uploader.UploaderFragment">
 
-    <LinearLayout
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_selectable"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+    />
+
+    <Button
+            android:id="@+id/UPLOAD_BTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_menu"
+            android:textColor="@color/teal_700"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal"
+            app:icon="@android:drawable/stat_sys_upload"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+    />
+
+
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -40,15 +66,6 @@
 
         </TableLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/UPLOAD_BTN"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@android:drawable/stat_sys_upload"/>
+    </ScrollView>
 
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
