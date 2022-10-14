@@ -1,6 +1,7 @@
 package cn.sunnysky.ui.menu_uploader;
 
 import android.accounts.NetworkErrorException;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -21,6 +23,7 @@ import cn.sunnysky.activities.MainActivity;
 import cn.sunnysky.api.default_impl.DefaultFileManager;
 import cn.sunnysky.databinding.FragmentGalleryBinding;
 import cn.sunnysky.dialogs.OperationProgressAnimator;
+import cn.sunnysky.util.ViewUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import org.jetbrains.annotations.Nullable;
@@ -78,6 +81,8 @@ public class UploaderFragment extends Fragment {
         }
     }
 
+
+
     private void renderRow(String k,String v){
 
         TextView[] buf = new TextView[2];
@@ -101,14 +106,22 @@ public class UploaderFragment extends Fragment {
         }
 
         final CheckBox checkBox = new CheckBox(getContext());
+        checkBox.setGravity(Gravity.CENTER);
+        checkBox.setButtonDrawable(R.mipmap.icon_v2_r);
+        checkBox.setText(R.string.unselected);
+        checkBox.setTextSize(22);
+        checkBox.setOnClickListener(ViewUtil.tableCheckBoxOnClickListener);
+        checkBox.setTextColor(Color.LTGRAY);
         tableRow.addView(checkBox);
 
         String s;
 
         if (loadedMapping != null && !loadedMapping.keySet().isEmpty())
             if ((s = loadedMapping.get(k)) != null)
-                if (Boolean.parseBoolean(s))
+                if (Boolean.parseBoolean(s)) {
                     checkBox.setChecked(true);
+                    checkBox.callOnClick();
+                }
 
         if (mapping != null)
             mapping.put(checkBox,name);

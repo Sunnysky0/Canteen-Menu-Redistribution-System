@@ -1,5 +1,6 @@
 package cn.sunnysky.ui.request_channel;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import cn.sunnysky.databinding.FragmentSlideshowBinding;
 import cn.sunnysky.dialogs.CommonNotification;
 import cn.sunnysky.dialogs.OperationProgressAnimator;
 import cn.sunnysky.util.DateUtil;
+import cn.sunnysky.util.ViewUtil;
 import com.google.android.material.snackbar.Snackbar;
 import org.jetbrains.annotations.Nullable;
 
@@ -129,14 +131,22 @@ public class ChannelFragment extends Fragment {
 
             final CheckBox checkBox = new CheckBox(getContext());
             checkBox.setGravity(Gravity.CENTER);
+            checkBox.setButtonDrawable(R.mipmap.icon_v2_r);
+            checkBox.setText(R.string.unselected);
+            checkBox.setTextSize(22);
+            checkBox.setOnClickListener(ViewUtil.tableCheckBoxOnClickListener);
+            checkBox.setTextColor(Color.LTGRAY);
+            tableRow.addView(checkBox);
             tableRow.addView(checkBox);
 
             String s;
 
             if (loadedMapping != null && !loadedMapping.keySet().isEmpty())
                 if ((s = loadedMapping.get(v)) != null)
-                    if (Boolean.parseBoolean(s))
+                    if (Boolean.parseBoolean(s)) {
                         checkBox.setChecked(true);
+                        checkBox.callOnClick();
+                    }
 
             if (mapping != null)
                 mapping.put(checkBox,foodName);

@@ -56,6 +56,9 @@
     <string name="send_menu">上传选择</string>
     <string name="send_rep">上传请求</string>
     <string name="server_failure">无法连接至服务器，请重试</string>
+    <string name="upload">上传</string>
+    <string name="selected">已选择</string>
+    <string name="unselected">未选择</string>
 
 
 </resources>
