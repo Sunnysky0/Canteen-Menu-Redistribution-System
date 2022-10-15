@@ -137,7 +137,6 @@ public class ChannelFragment extends Fragment {
             checkBox.setOnClickListener(ViewUtil.tableCheckBoxOnClickListener);
             checkBox.setTextColor(Color.LTGRAY);
             tableRow.addView(checkBox);
-            tableRow.addView(checkBox);
 
             String s;
 
