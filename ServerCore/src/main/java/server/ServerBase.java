@@ -182,16 +182,7 @@ public class ServerBase implements Runnable, IServer {
     @Override
     public void onCommonCommand(String msg) {
         if (msg.equalsIgnoreCase("stop")){
-            logger.log("Server shutdown");
-            statusFlag = false;
-
-            executorService.shutdown();
-
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            shutdown();
         } else if (msg.equalsIgnoreCase("calculate")){
             MenuCalculator.loadAndCalculate("user_index",".//PUBLIC_DATA//food_data_s1.fson");
         } else if (msg.equalsIgnoreCase("commands"))
@@ -205,5 +196,26 @@ public class ServerBase implements Runnable, IServer {
     @Override
     public void onCalculate() {
         MenuCalculator.loadAndCalculate("user_index",".//PUBLIC_DATA//food_data_s1.fson");
+    }
+
+    @Override
+    public void dropMenu() {
+        fileManager.createNewFileInstance("RecommendedMenu");
+
+        recommendedMenu = null;
+    }
+
+    @Override
+    public void shutdown() {
+        logger.log("Server shutdown");
+        statusFlag = false;
+
+        executorService.shutdown();
+
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,7 +10,7 @@ import static cn.sunnysky.IntegratedManager.logger;
 
 public class FTPHandler {
     private FTPClient ftpClient;
-    private FTPManager manager;
+
 
     public FTPHandler() throws IOException {
         ftpLogin();
@@ -51,54 +51,9 @@ public class FTPHandler {
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
-    /**
-     * 从FTP服务器上下载文件,支持断点续传
-     *
-     * @param remote
-     *            远程文件路径
-     * @param local
-     *            本地文件路径
-     * @return 上传的状态
-     * @throws IOException
-     */
 
-    public boolean dwl(String remote, String local) throws IOException {
-        FTPCfg config = new FTPCfg();
-        manager = new FTPManager(config);
-        manager.connectLogin();
-        manager.setListener(new IRetrieveListener() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onTrack(long nowOffset) {
-
-            }
-
-            @Override
-            public void onError(Object obj, int type) {
-                logger.log(obj.toString());
-            }
-
-            @Override
-            public void onCancel(Object obj) {
-                logger.log(obj.toString());
-            }
-
-            @Override
-            public void onDone() {
-
-            }
-        });
-        manager.download(remote,local);
-
-        return true;
-    }
 
     public boolean download(String remote, String local) throws IOException {
         if (!ftpClient.isConnected())
@@ -189,7 +144,7 @@ public class FTPHandler {
                 ftp.disconnect();
                 return success;
             }
-             ftp.changeWorkingDirectory(remotePath);//转移到FTP服务器目录
+            ftp.changeWorkingDirectory(remotePath);//转移到FTP服务器目录
 
             logger.log("Searching files in remote directory");
             for(FTPFile ff:ftp.listFiles()){

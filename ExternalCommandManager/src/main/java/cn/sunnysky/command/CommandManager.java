@@ -103,7 +103,13 @@ public class CommandManager {
         }
 
         assert id != null;
-        Command cmd = getCmdById(Integer.parseInt(id));
+        Command cmd;
+        try {
+            cmd = getCmdById(Integer.parseInt(id));
+        } catch (NumberFormatException e){
+            logger.log("Command Id not solved");
+            return;
+        }
 
         Class<? extends Command> commandClass = cmd.getClass();
         Method onReceive = commandClass.getMethod("onReceive", String[].class);

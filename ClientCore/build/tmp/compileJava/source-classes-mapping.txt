@@ -1,14 +1,4 @@
-client/ftp/FTPCfg.java
- client.ftp.FTPCfg
-client/ftp/IRetrieveListener.java
- client.ftp.IRetrieveListener
-client/ftp/FTPManager.java
- client.ftp.FTPManager
- client.ftp.FTPManager$ERROR
-client/ftp/FTPClientProxy.java
- client.ftp.FTPClientProxy
 client/ClientBase.java
  client.ClientBase
 client/ftp/FTPHandler.java
  client.ftp.FTPHandler
- client.ftp.FTPHandler$1

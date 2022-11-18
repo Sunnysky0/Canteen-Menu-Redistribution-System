@@ -1,5 +1,5 @@
-cn/sunnysky/command/impl/CommandCalculateMenu.java
- cn.sunnysky.command.impl.CommandCalculateMenu
+cn/sunnysky/api/default_impl/DefaultClassUtil.java
+ cn.sunnysky.api.default_impl.DefaultClassUtil
 cn/sunnysky/user/UserPermission.java
  cn.sunnysky.user.UserPermission
 cn/sunnysky/security/crypto/Digest.java
@@ -18,8 +18,8 @@ cn/sunnysky/api/annotation/Side.java
  cn.sunnysky.api.annotation.Side
 cn/sunnysky/command/impl/CommandLogin.java
  cn.sunnysky.command.impl.CommandLogin
-cn/sunnysky/command/CommandManager.java
- cn.sunnysky.command.CommandManager
+cn/sunnysky/command/impl/CommandDirectControl.java
+ cn.sunnysky.command.impl.CommandDirectControl
 cn/sunnysky/api/default_impl/DefaultFileManager.java
  cn.sunnysky.api.default_impl.DefaultFileManager
 cn/sunnysky/api/annotation/RequirePermission.java
@@ -32,12 +32,12 @@ cn/sunnysky/user/UserManager.java
  cn.sunnysky.user.UserManager
  cn.sunnysky.user.UserManager$ActiveUser
  cn.sunnysky.user.UserManager$User
-cn/sunnysky/command/impl/CommandDirectControl.java
- cn.sunnysky.command.impl.CommandDirectControl
-cn/sunnysky/api/IServer.java
- cn.sunnysky.api.IServer
-cn/sunnysky/IntegratedManager.java
- cn.sunnysky.IntegratedManager
+cn/sunnysky/command/impl/CommandRegister.java
+ cn.sunnysky.command.impl.CommandRegister
+cn/sunnysky/command/impl/CommandUpload.java
+ cn.sunnysky.command.impl.CommandUpload
+cn/sunnysky/security/crypto/utils/Pack.java
+ cn.sunnysky.security.crypto.utils.Pack
 cn/sunnysky/security/crypto/digests/MD4Digest.java
  cn.sunnysky.security.crypto.digests.MD4Digest
 cn/sunnysky/api/default_impl/DefaultLogger.java
@@ -60,11 +60,15 @@ cn/sunnysky/security/crypto/digests/GeneralDigest.java
  cn.sunnysky.security.crypto.digests.GeneralDigest
 cn/sunnysky/command/impl/CommandNewRating.java
  cn.sunnysky.command.impl.CommandNewRating
-cn/sunnysky/command/impl/CommandUpload.java
- cn.sunnysky.command.impl.CommandUpload
-cn/sunnysky/command/impl/CommandRegister.java
- cn.sunnysky.command.impl.CommandRegister
-cn/sunnysky/api/default_impl/DefaultClassUtil.java
- cn.sunnysky.api.default_impl.DefaultClassUtil
-cn/sunnysky/security/crypto/utils/Pack.java
- cn.sunnysky.security.crypto.utils.Pack
+cn/sunnysky/api/IServer.java
+ cn.sunnysky.api.IServer
+cn/sunnysky/command/impl/CommandShutdown.java
+ cn.sunnysky.command.impl.CommandShutdown
+cn/sunnysky/command/impl/CommandDropMenu.java
+ cn.sunnysky.command.impl.CommandDropMenu
+cn/sunnysky/command/impl/CommandCalculateMenu.java
+ cn.sunnysky.command.impl.CommandCalculateMenu
+cn/sunnysky/IntegratedManager.java
+ cn.sunnysky.IntegratedManager
+cn/sunnysky/command/CommandManager.java
+ cn.sunnysky.command.CommandManager

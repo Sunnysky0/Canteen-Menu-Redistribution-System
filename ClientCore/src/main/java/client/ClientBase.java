@@ -55,7 +55,13 @@ public class ClientBase {
             Scanner in = new Scanner(System.in);
             while(!(msg = in.nextLine()).equals(" "))
             {
-                String[] temp = msg.split(":");
+                String[] temp;
+                if (msg.contains(":")){
+                    temp = msg.split(":");
+                } else {
+                    temp = new String[]{msg};
+                }
+
 
                 String[] args;
                 if (temp.length > 1) args = temp[1].split(",");
