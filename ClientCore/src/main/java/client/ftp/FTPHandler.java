@@ -1,9 +1,11 @@
 package client.ftp;
 
 import client.ClientBase;
+import cn.sunnysky.api.LogType;
 import org.apache.commons.net.ftp.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 
 import static cn.sunnysky.IntegratedManager.logger;
@@ -63,14 +65,14 @@ public class FTPHandler {
         ftpClient.enterLocalPassiveMode();
         // 设置以二进制方式传输
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        ftpClient.setControlEncoding("GBK");
+        ftpClient.setControlEncoding("UTF-8");
         boolean result;
 
 
         // 检查远程文件是否存在
-        FTPFile[] files = ftpClient.listFiles(new String(remote.getBytes("GBK"), "iso-8859-1"));
+        FTPFile[] files = ftpClient.listFiles(new String(remote.getBytes("GBK"), StandardCharsets.ISO_8859_1));
         if (files.length != 1) {
-            logger.log("Remote file does not exist");
+            logger.log("Remote file does not exist", LogType.ERROR);
             return false;
         }
         long lRemoteSize = files[0].getSize();
@@ -87,7 +89,7 @@ public class FTPHandler {
             // 进行断点续传，并记录状态
             FileOutputStream out = new FileOutputStream(f, true);
             ftpClient.setRestartOffset(localSize);
-            InputStream in = ftpClient.retrieveFileStream(new String(remote.getBytes("GBK"), "iso-8859-1"));
+            InputStream in = ftpClient.retrieveFileStream(new String(remote.getBytes("UTF-8"), StandardCharsets.UTF_8));
             byte[] bytes = new byte[1024];
             int c;
             while ((c = in.read(bytes)) != -1) {

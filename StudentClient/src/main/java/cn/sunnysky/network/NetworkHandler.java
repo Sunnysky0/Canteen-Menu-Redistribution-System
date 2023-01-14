@@ -41,7 +41,7 @@ public class NetworkHandler {
         StudentClientApplication.join(
                 () -> {
                     try {
-                        this.client = new ClientBase();
+                        this.client = StudentClientApplication.INSTANCE.createClient();
 
                         flag[0] = true;
 
@@ -55,7 +55,7 @@ public class NetworkHandler {
         long limit = System.currentTimeMillis() + 3000;
 
         while(flag[0] == null && System.currentTimeMillis() < limit)
-            IntegratedManager.logger.log("Connecting to server");
+            continue;
 
         if (flag[0] == null)
             flag[0] = false;
@@ -159,18 +159,21 @@ public class NetworkHandler {
 
         boolean flag = false;
 
-        if (data == null)
+        if (data == null) {
+            IntegratedManager.logger.log("Null data");
             return false;
+        }
 
         for (String k : data.keySet()){
             File f = new File(downloadPath,k);
 
-            if ( !f.exists() )
-                flag = transferRemoteFile(".//" + k,downloadPath + "/" + k);
-            else if ( !SecurityManager.md5HashCode(new FileInputStream(f)).contentEquals(data.get(k)) ){
+            if ( f.exists() )
                 f.delete();
-                flag = transferRemoteFile(".//" + k,downloadPath + "/" + k);
-            }
+
+            flag = transferRemoteFile(".//" + k,downloadPath + "/" + k);
+
+            if (!flag)
+                IntegratedManager.logger.log("Download Error",LogType.ERROR);
         }
 
         return flag;

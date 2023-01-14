@@ -11,7 +11,7 @@ def replaceCharInStr(stra, old, new):
 
 
 def append(target, path):
-    f = open("/assets/food_data_s2.fson", "at")
+    f = open("../main/resources/assets/food_data_s1.fson", "at")
     f.write("\ntarget:" + target + ";" + "path:" + path)
     print("Data added")
 

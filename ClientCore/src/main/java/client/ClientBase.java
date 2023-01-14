@@ -12,12 +12,21 @@ import java.util.Scanner;
 import static cn.sunnysky.IntegratedManager.logger;
 
 public class ClientBase {
-    public static final String HOST = "120.48.47.150";
+    public static final String HOST = "120.48.47.150";//120.48.47.150
     public static final int PORT = 40000;
     public static final int FTP_PORT = 40021;
     private Socket socket;
     private IntegratedManager manager;
     private FTPHandler ftpHandler;
+
+    public ClientBase(File externalCacheDir) throws IOException {
+        manager = new IntegratedManager(Side.CLIENT, externalCacheDir.getPath());
+        ftpHandler = new FTPHandler();
+
+
+        socket = new Socket(HOST, PORT);
+        logger.log("Client started");
+    }
 
     public ClientBase() throws IOException {
         manager = new IntegratedManager(Side.CLIENT);

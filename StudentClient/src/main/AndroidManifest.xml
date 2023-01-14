@@ -18,7 +18,9 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/food"
             android:supportsRtl="true"
-            android:theme="@style/Theme.CantennMenuRedistributionSystem">
+            android:theme="@style/Theme.CantennMenuRedistributionSystem"
+            android:requestLegacyExternalStorage="true"
+    >
         <activity
                 android:name=".activities.RegisterActivity"
                 android:exported="true"/>

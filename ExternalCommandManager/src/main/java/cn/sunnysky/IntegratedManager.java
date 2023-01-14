@@ -33,6 +33,14 @@ public class IntegratedManager {
             fileManager = new DefaultFileManager("DATA_OF_" + this.currentSide.toString());
     }
 
+    @SuppressWarnings("Client-side constructor")
+    public IntegratedManager(Side currentSide, String workingDir) {
+        this.currentSide = currentSide;
+        commandManager = new CommandManager(this.currentSide);
+        if(fileManager instanceof DefaultFileManager || fileManager == null)
+            fileManager = new DefaultFileManager(workingDir + "/DATA_OF_" + this.currentSide.toString());
+    }
+
     @SuppressWarnings("Server-side constructor")
     public IntegratedManager(Side currentSide,UserManager userManager) {
         this.currentSide = currentSide;

@@ -17,7 +17,7 @@ import static cn.sunnysky.IntegratedManager.logger;
 
 public class StartTest {
     public static void main(String[] args) {
-        new StartTest().test1();
+        new StartTest().test2();
     }
 
     public final void test1(){
@@ -52,7 +52,7 @@ public class StartTest {
     }
 
     public final void test2(){
-        new DTreeBuilder().buildFromFile("/assets/food_data_s1.fson").visualize(0);
+        new DTreeBuilder().buildFromFile("F:\\Repos\\Cantenn Menu Redistribution System\\Canteen-Menu-Redistribution-System\\MenuDesigner\\src\\main\\resources\\assets\\food_data_s1.fson").visualize(0);
     }
 
     public final void test2x(){

@@ -1,5 +1,6 @@
 package cn.sunnysky.activities;
 
+import android.Manifest;
 import android.accounts.NetworkErrorException;
 import android.content.Intent;
 import android.text.method.HideReturnsTransformationMethod;
@@ -7,8 +8,10 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.core.app.ActivityCompat;
 import cn.sunnysky.IntegratedManager;
 import cn.sunnysky.R;
 import cn.sunnysky.StudentClientApplication;
@@ -51,6 +54,19 @@ public class LoginActivity extends AppCompatActivity {
         if (userMap != null && !userMap.keySet().isEmpty()){
             this.username.setText((CharSequence) userMap.keySet().toArray()[0]);
             this.password.setText((CharSequence) userMap.values().toArray()[0]);
+        }
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 222);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        switch (requestCode) {
+            case 222:
+                Toast.makeText(getApplicationContext(), "已申请权限", Toast.LENGTH_SHORT).show();
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

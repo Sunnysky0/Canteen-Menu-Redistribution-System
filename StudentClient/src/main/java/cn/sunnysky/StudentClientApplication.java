@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import client.ClientBase;
 import cn.sunnysky.api.IFileManager;
 import cn.sunnysky.api.ILogger;
 import cn.sunnysky.api.LogType;
@@ -15,6 +16,8 @@ import cn.sunnysky.network.NetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +26,8 @@ import java.util.concurrent.Executors;
 public class StudentClientApplication extends Application implements IFileManager {
 
     public static NetworkHandler internalNetworkHandler;
+
+    public static StudentClientApplication INSTANCE;
 
     public static IFileManager DATABASE_INSTANCE;
 
@@ -62,9 +67,15 @@ public class StudentClientApplication extends Application implements IFileManage
         return internalNetworkHandler != null && internalNetworkHandler.getClient() != null;
     }
 
+    public ClientBase createClient() throws IOException {
+        return new ClientBase(ctx.getExternalCacheDir());
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        INSTANCE = this;
 
         IntegratedManager.setLogger(logger);
 

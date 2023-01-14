@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -42,8 +43,15 @@ public class DefaultFileManager implements IFileManager {
         File index = new File(PREFIX + INDEX + SUFFIX);
 
         try {
-            if(!index.exists())
-                index.createNewFile();
+            if(!index.exists()) {
+                try{
+                    index.createNewFile();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+
+                }
+            }
 
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
@@ -162,8 +170,9 @@ public class DefaultFileManager implements IFileManager {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(targetFile)));
-            String strTmp = null;
+            String strTmp = new String();
             while ((strTmp = reader.readLine()) != null){
+                strTmp = new String(strTmp.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
                 if(strTmp.contentEquals("")) continue;
                 if(processor != null)
                     processor.accept(strTmp,result);

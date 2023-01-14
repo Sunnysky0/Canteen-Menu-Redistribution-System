@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2021.3/device-explorer/Pixel_XL_API_30 [emulator-5554]/data/data/cn.sunnysky/files/download/food_data_s1.fson" charset="GBK" />
     <file url="file://$PROJECT_DIR$/ExternalCommandManager/src/main/java/cn/sunnysky/api/default_impl/DefaultFileManager.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ExternalCommandManager/src/main/java/cn/sunnysky/command/CommandManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MenuDesigner/src/main/java/cn/sunnysky/StartTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MenuDesigner/src/main/resources/assets/food_data_s1.fson" charset="GBK" />
     <file url="file://$PROJECT_DIR$/MenuDesigner/src/main/resources/assets/food_data_s2.fson" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/ServerCore/PUBLIC_DATA/food_data_s1.fson" charset="UTF-8" />
   </component>
 </project>
