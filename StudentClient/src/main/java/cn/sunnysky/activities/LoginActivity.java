@@ -18,6 +18,7 @@ import cn.sunnysky.StudentClientApplication;
 import cn.sunnysky.dialogs.OperationProgressAnimator;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,8 +83,12 @@ public class LoginActivity extends AppCompatActivity {
             final String userName = username.getText().toString();
             final String original = password.getText().toString();
 
-            rsp = internalNetworkHandler
-                    .login(userName, original);
+            try {
+                rsp = internalNetworkHandler
+                        .login(userName, original);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             try {
                 Thread.sleep(500);

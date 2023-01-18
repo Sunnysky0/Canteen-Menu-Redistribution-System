@@ -62,7 +62,7 @@ public class ClientBase {
             String msg = null;
             String rsp = null;
             Scanner in = new Scanner(System.in);
-            while(!(msg = in.nextLine()).equals(" "))
+            while(in.hasNextLine() && !(msg = in.nextLine()).equals(" "))
             {
                 String[] temp;
                 if (msg.contains(":")){

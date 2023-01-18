@@ -63,8 +63,8 @@ public class NetworkHandler {
         return flag[0];
     }
 
-    public String login(String userName,String pwd){
-        assert client != null;
+    public String login(String userName,String pwd) throws IOException {
+        if (client == null) client = StudentClientApplication.INSTANCE.createClient();
         try {
             return client.sendCmd(CommandLogin.LOGIN_ID,userName,pwd);
         } catch (IOException e) {

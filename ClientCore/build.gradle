@@ -1,9 +1,12 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group 'cn.sunnysky'
 version '1.0-STABLE'
+mainClassName = "client.ClientBase"
 
 repositories {
     mavenCentral()

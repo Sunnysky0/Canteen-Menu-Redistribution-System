@@ -12,12 +12,12 @@ cn/sunnysky/model/DTree.java
  cn.sunnysky.model.DTree
 cn/sunnysky/controller/DTreeController.java
  cn.sunnysky.controller.DTreeController
-cn/sunnysky/model/DataModelManager.java
- cn.sunnysky.model.DataModelManager
 cn/sunnysky/model/SortedList.java
  cn.sunnysky.model.SortedList
  cn.sunnysky.model.SortedList$1
-cn/sunnysky/controller/DTreeBuilder.java
- cn.sunnysky.controller.DTreeBuilder
+cn/sunnysky/model/DataModelManager.java
+ cn.sunnysky.model.DataModelManager
 cn/sunnysky/StartTest.java
  cn.sunnysky.StartTest
+cn/sunnysky/controller/DTreeBuilder.java
+ cn.sunnysky.controller.DTreeBuilder
